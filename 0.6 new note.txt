@@ -1,0 +1,18 @@
+note over browser: 
+user types note into input form and clicks save
+end note
+
+note over browser:
+browser adds new note object to notes array 
+and rerenders the notes list element
+end note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+
+note over server: 
+server creates a new note object 
+containing data in POST request and 
+adds it to an array called notes
+end note
+
+server-->browser: HTTP STATUS CODE 201
