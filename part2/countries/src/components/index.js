@@ -1,3 +1,4 @@
 import Country from "./Country";
 import CountriesList from "./CountriesList";
-export { Country, CountriesList };
+import Weather from "./Weather";
+export { Country, CountriesList, Weather };

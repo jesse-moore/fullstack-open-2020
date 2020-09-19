@@ -1,6 +1,7 @@
 import React from "react";
+import { Weather } from "./";
 
-export default ({ data }) => {
+export default ({ data, setWeatherData, weatherData }) => {
   const { name, capital, population, languages, flag } = data;
   return (
     <div>
@@ -13,7 +14,12 @@ export default ({ data }) => {
           <li key={lName}>{lName}</li>
         ))}
       </ul>
-      <img src={flag} style={{width:"200px"}}/>
+      <img src={flag} style={{ width: "200px" }} />
+      <Weather
+        name={capital}
+        setWeatherData={setWeatherData}
+        weatherData={weatherData}
+      />
     </div>
   );
 };

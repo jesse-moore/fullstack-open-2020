@@ -5,15 +5,10 @@ import { Country, CountriesList } from "./components";
 const App = () => {
   const [countries, setCountries] = useState([]);
   const [filterInput, setFilterInput] = useState("germany");
-
-  //   useEffect(() => {
-  //     axios.get("https://restcountries.eu/rest/v2/all").then((res) => {
-  //       setCountries(res.data);
-  //     });
-  //   }, []);
+  const [weatherData, setWeatherData] = useState({});
 
   useEffect(() => {
-    axios.get("http://localhost:3001/countries").then((res) => {
+    axios.get("https://restcountries.eu/rest/v2/all").then((res) => {
       setCountries(res.data);
     });
   }, []);
@@ -30,16 +25,25 @@ const App = () => {
 
   const filteredCountries = countries.filter(handleFilter);
   const numCountries = filteredCountries.length;
-
   return (
     <div className="App" style={{ padding: "20px" }}>
       <div>
         find countries <input onChange={handleChange} value={filterInput} />
       </div>
       {numCountries === 0 && null}
-      {numCountries === 1 && <Country data={filteredCountries[0]} />}
+      {numCountries === 1 && (
+        <Country
+          data={filteredCountries[0]}
+          setWeatherData={setWeatherData}
+          weatherData={weatherData}
+        />
+      )}
       {numCountries <= 10 && numCountries > 1 && (
-        <CountriesList data={filteredCountries} />
+        <CountriesList
+          data={filteredCountries}
+          setWeatherData={setWeatherData}
+          weatherData={weatherData}
+        />
       )}
       {numCountries > 10 && <div>Too many matches, specify another filter</div>}
     </div>
