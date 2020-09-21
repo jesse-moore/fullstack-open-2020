@@ -1,16 +1,25 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { phonebookService } from "./services";
-import { Filter, PersonForm, PersonsList } from "./components";
+import { Filter, Message, PersonForm, PersonsList } from "./components";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
   const [newFilter, setNewFilter] = useState("");
+  const [appMessage, setAppMessage] = useState({ message: "", type: "" });
 
   useEffect(() => {
-    phonebookService.getPhoneBook().then((data) => setPersons(data));
+    phonebookService
+      .getPhoneBook()
+      .then((data) => setPersons(data))
+      .catch(() => {
+        handleMessage(
+          `Cannot retrieve phonebook database from server`,
+          "alert"
+        );
+      });
   }, []);
 
   const checkNameExists = () => {
@@ -42,23 +51,38 @@ const App = () => {
   const handleAdd = () => {
     const id = persons.length + 1;
     const newPerson = { name: newName, number: newPhoneNumber, id };
-    phonebookService.addEntry(newPerson).then((person) => {
-      setPersons([person, ...persons]);
-      setNewName("");
-      setNewPhoneNumber("");
-    });
+    phonebookService
+      .addEntry(newPerson)
+      .then((p) => {
+        setPersons([p, ...persons]);
+        setNewName("");
+        setNewPhoneNumber("");
+        handleMessage(`Added ${p.name}`, "notif");
+      })
+      .catch(() => {
+        handleMessage(`Error adding ${newPerson.name}`, "alert");
+      });
   };
 
   const handleUpdate = () => {
     if (!alertNameExists()) return;
     const person = persons.filter((p) => p.name === newName)[0];
     const updatedPerson = { ...person, number: newPhoneNumber };
-    phonebookService.updateEntry(updatedPerson).then((personData) => {
-      const newPersons = persons.map((p) => {
-        return p.name === personData.name ? personData : p;
+    phonebookService
+      .updateEntry(updatedPerson)
+      .then((personData) => {
+        const newPersons = persons.map((p) => {
+          return p.name === personData.name ? personData : p;
+        });
+        setPersons(newPersons);
+        handleMessage(`Updated ${person.name}`, "notif");
+      })
+      .catch(() => {
+        handleMessage(
+          `${person.name} already removed from server and cannot be updated`,
+          "alert"
+        );
       });
-      setPersons(newPersons);
-    });
   };
 
   const handleDelete = ({ target }) => {
@@ -68,12 +92,23 @@ const App = () => {
     )[0];
     const confirmDelete = window.confirm(`Delete ${personName}?`);
     if (!confirmDelete) return;
-    phonebookService.deleteEntry(id).then(() => {
-      const newPersons = persons.filter(
-        (person) => person.id !== Number.parseInt(id)
-      );
-      setPersons(newPersons);
-    });
+    phonebookService
+      .deleteEntry(id)
+      .then(() => {
+        const newPersons = persons.filter((p) => p.id !== Number.parseInt(id));
+        setPersons(newPersons);
+        handleMessage(`Deleted ${personName}`, "notif");
+      })
+      .catch(() => {
+        handleMessage(`Error deleting ${personName}`, "alert");
+      });
+  };
+
+  const handleMessage = (message, type) => {
+    setAppMessage({ message, type });
+    setTimeout(() => {
+      setAppMessage({});
+    }, 5000);
   };
 
   const personsFilter = ({ name }) => {
@@ -84,6 +119,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Message appMessage={appMessage} />
       <Filter handleOnChange={handleOnChange} newFilter={newFilter} />
       <h2>add a new</h2>
       <PersonForm
