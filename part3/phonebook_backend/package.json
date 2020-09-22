@@ -7,7 +7,8 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "build:ui": "rm -rf build && cd ../phonebook_frontend && npm run build && cp -r build ../phonebook_backend",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "git subtree push --prefix part3/phonebook_backend heroku master"
   },
   "author": "",
   "license": "ISC",

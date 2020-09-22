@@ -2,6 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const app = express();
 const phonebook = require("./phonebook");
+const PORT = process.env.PORT || 3001;
 
 app.use(express.json());
 morgan.token("body", function (req, res) {
@@ -87,7 +88,6 @@ function checkNameExists(name) {
   return check === -1 ? false : true;
 }
 
-const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
