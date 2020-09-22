@@ -21,9 +21,10 @@ app.use(
     ].join(" ");
   })
 );
+app.use(express.static("build"));
 
 app.get("/api/persons", (req, res) => {
-  res.json(phonebook);
+  res.json(phonebook.persons);
 });
 
 app.get("/api/persons/:id", (req, res) => {
