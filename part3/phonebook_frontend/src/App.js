@@ -75,6 +75,8 @@ const App = () => {
           return p.name === personData.name ? personData : p;
         });
         setPersons(newPersons);
+        setNewName("");
+        setNewPhoneNumber("");
         handleMessage(`Updated ${person.name}`, "notif");
       })
       .catch(() => {
@@ -88,14 +90,14 @@ const App = () => {
   const handleDelete = ({ target }) => {
     const { name: id } = target;
     const { name: personName } = persons.filter(
-      (person) => person.id === Number.parseInt(id)
+      (person) => person.id === id
     )[0];
     const confirmDelete = window.confirm(`Delete ${personName}?`);
     if (!confirmDelete) return;
     phonebookService
       .deleteEntry(id)
       .then(() => {
-        const newPersons = persons.filter((p) => p.id !== Number.parseInt(id));
+        const newPersons = persons.filter((p) => p.id !== id);
         setPersons(newPersons);
         handleMessage(`Deleted ${personName}`, "notif");
       })

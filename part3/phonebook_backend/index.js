@@ -25,18 +25,32 @@ app.use(
 );
 app.use(express.static("build"));
 
+const errorHandler = (error, req, res, next) => {
+  console.error(error.message);
+
+  if (error.name === "CastError") {
+    return res.status(400).send({ error: "malformatted id" });
+  }
+
+  next(error);
+};
+
+app.use(errorHandler);
+
 app.get("/api/persons", (req, res) => {
   Person.find({}).then((result) => {
     res.json(result);
   });
 });
 
-app.get("/api/persons/:id", (req, res) => {
+app.get("/api/persons/:id", (req, res, next) => {
   const id = req.params.id;
-  Person.findById(id).then((person) => {
-    if (person) return res.json(person);
-    res.status(404).end();
-  });
+  Person.findById(id)
+    .then((person) => {
+      if (person) return res.json(person);
+      res.status(404).end();
+    })
+    .catch((error) => next(error));
 });
 
 app.get("/api/info", (req, res) => {
@@ -48,17 +62,14 @@ app.get("/api/info", (req, res) => {
   });
 });
 
-// app.delete("/api/persons/:id", (req, res) => {
-//   const id = req.params.id;
-//   const entry = phonebook.persons.find(
-//     (person) => person.id === Number.parseInt(id)
-//   );
-//   if (entry) {
-//     deleteEntry(id);
-//     return res.status(204).end();
-//   }
-//   res.status(404).end();
-// });
+app.delete("/api/persons/:id", (req, res, next) => {
+  const id = req.params.id;
+  Person.findByIdAndRemove(id)
+    .then((result) => {
+      res.status(204).end();
+    })
+    .catch((error) => next(error));
+});
 
 app.post("/api/persons/", (req, res) => {
   const { name, number } = req.body;
@@ -70,18 +81,16 @@ app.post("/api/persons/", (req, res) => {
   person.save().then((entry) => res.json(entry));
 });
 
-// function deleteEntry(entryID) {
-//   const { persons } = phonebook;
-//   const newPersons = persons.filter(({ id }) => {
-//     return id !== Number.parseInt(entryID);
-//   });
-//   phonebook.persons = newPersons;
-// }
-
-// function checkNameExists(name) {
-//   const check = phonebook.persons.findIndex((person) => person.name === name);
-//   return check === -1 ? false : true;
-// }
+app.put("/api/persons/:id", (req, res, next) => {
+  const id = req.params.id;
+  const { name, number } = req.body;
+  const person = { name, number };
+  Person.findByIdAndUpdate(id, person, { new: true })
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((error) => next(error));
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
