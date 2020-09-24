@@ -1,4 +1,6 @@
-require("dotenv").config();
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 const express = require("express");
 const morgan = require("morgan");
 const app = express();
@@ -68,8 +70,6 @@ app.post("/api/persons/", (req, res, next) => {
   const { name, number } = req.body;
   if (!name) return res.status(400).send({ error: "name is missing" });
   if (!number) return res.status(400).send({ error: "number is missing" });
-  //   if (checkNameExists(name))
-  //   return res.status(400).send({ error: "name already exists" });
   const person = new Person({ name, number });
   person
     .save()
@@ -81,7 +81,6 @@ app.put("/api/persons/:id", (req, res, next) => {
   const id = req.params.id;
   const { name, number } = req.body;
   const person = { name, number };
-  console.log(person);
   Person.findByIdAndUpdate(id, person, {
     new: true,
     runValidators: true,
