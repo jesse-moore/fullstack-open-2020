@@ -8,7 +8,8 @@
     "dev": "nodemon index.js",
     "build:ui": "rm -rf build && cd ../phonebook_frontend && npm run build && cp -r build ../phonebook_backend",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "git subtree push --prefix part3/phonebook_backend heroku master"
+    "deploy": "git subtree push --prefix part3/phonebook_backend heroku master",
+    "lint": "eslint ."
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
+    "eslint": "^7.9.0",
     "nodemon": "^2.0.4"
   }
 }
