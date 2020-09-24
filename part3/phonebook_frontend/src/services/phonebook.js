@@ -9,7 +9,7 @@ const getPhoneBook = () => {
 
 const addEntry = (newEntry) => {
   const request = axios.post(baseURL, newEntry);
-  return request.then(({ data }) => data);
+  return request.then(({ data }) => data)
 };
 
 const updateEntry = (updatedEntry) => {

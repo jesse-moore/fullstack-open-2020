@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { phonebookService } from "./services";
 import { Filter, Message, PersonForm, PersonsList } from "./components";
 
@@ -54,12 +53,19 @@ const App = () => {
     phonebookService
       .addEntry(newPerson)
       .then((p) => {
+        console.log(p.message);
         setPersons([p, ...persons]);
         setNewName("");
         setNewPhoneNumber("");
         handleMessage(`Added ${p.name}`, "notif");
       })
-      .catch(() => {
+      .catch((error) => {
+        const errorMessage = error.response && error.response.data.error;
+        if (errorMessage)
+          return handleMessage(
+            `Error adding ${newPerson.name}: ${errorMessage}`,
+            "alert"
+          );
         handleMessage(`Error adding ${newPerson.name}`, "alert");
       });
   };
@@ -79,7 +85,9 @@ const App = () => {
         setNewPhoneNumber("");
         handleMessage(`Updated ${person.name}`, "notif");
       })
-      .catch(() => {
+      .catch((error) => {
+        const errorMessage = error.response && error.response.data.error;
+        if (errorMessage) return handleMessage(errorMessage, "alert");
         handleMessage(
           `${person.name} already removed from server and cannot be updated`,
           "alert"
