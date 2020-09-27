@@ -4,8 +4,7 @@ Content-Type: application/json
 {
 	"title":"First Blog",
 	"author":"Matt Baker",
-	"url": "/",
-	"likes": 0
+	"url": "/"
 }
 
 ###
