@@ -21,6 +21,8 @@ const errorHandler = (error, request, response, next) => {
         return response.status(400).json({ error: error.message })
     if (error.message === 'Bad Request')
         return response.status(400).send({ error: 'bad request' })
+    if (error.message)
+        return response.status(400).send({ error: error.message })
     next(error)
 }
 
