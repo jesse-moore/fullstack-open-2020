@@ -1,18 +1,14 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
-const testData = require('./testData').blogs
 const Blog = require('../models/blog')
+const { initBlogs, initUsers } = require('./init_db')
 
 const api = supertest(app)
 
-beforeEach(async () => {
-    await Blog.deleteMany({})
-    const savePromises = testData.map((blog) => {
-        const blogObject = new Blog(blog)
-        return blogObject.save()
-    })
-    await Promise.all(savePromises)
+beforeAll(async () => {
+    const users = await initUsers()
+    await initBlogs(users)
 })
 
 describe('retrieving blogs', () => {
@@ -27,6 +23,14 @@ describe('retrieving blogs', () => {
         const response = await api.get('/api/blogs')
         const blog = response.body[0]
         expect(blog.id).toBeDefined()
+    })
+    test('blogs are returned with creators user data', async () => {
+        const response = await api.get('/api/blogs')
+        const blog = response.body[0]
+        expect(blog.user).toBeDefined()
+        expect(blog.user.username).toBeDefined()
+        expect(blog.user.name).toBeDefined()
+        expect(blog.user.id).toBeDefined()
     })
 })
 
@@ -54,7 +58,7 @@ describe('creating new blog post', () => {
 
     test('defaults likes to 0', async () => {
         const newPost = {
-            title: 'New Blog Post',
+            title: 'New Blog Post 2',
             author: 'Dan Young',
             url: '/',
         }

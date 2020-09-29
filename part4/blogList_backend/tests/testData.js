@@ -52,4 +52,22 @@ const blogs = [
     },
 ]
 
-module.exports = { blogs }
+const users = [
+    {
+        username: 'johnny82',
+        name: 'johnny smith',
+        password: 'password123',
+    },
+    {
+        username: 'mike74',
+        name: 'mike smith',
+        password: 'password456',
+    },
+    {
+        username: 'linda84',
+        name: 'linda smith',
+        password: 'asdfghjkl',
+    },
+]
+
+module.exports = { blogs, users }
