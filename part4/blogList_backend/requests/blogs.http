@@ -9,16 +9,13 @@ Content-Type: application/json
 ###
 DELETE  http://localhost:3001/api/blogs/5f737092f426e81cac9e3bb7 HTTP/1.1
 Content-Type: application/json
-Authorization: bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pa2U3NCIsImlkIjoiNWY3MzVjOWE1YTZkYzg0NGMwNGRhODdmIiwiaWF0IjoxNjAxNDAyOTIzfQ.DCZ0Yifg2ZwK2iav-pHF9ry23gd001HhUMFDPvCWmgk
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pa2U3NCIsImlkIjoiNWY3MzVjOWE1YTZkYzg0NGMwNGRhODdmIiwiaWF0IjoxNjAxNDAyOTIzfQ.DCZ0Yifg2ZwK2iav-pHF9ry23gd001HhUMFDPvCWmgk
 
 ###
-PUT  http://localhost:3001/api/blogs/5f737255643c9e3028b9acfb HTTP/1.1
+DELETE  http://localhost:3001/api/blogs/5f737092f426e81cac9e3bb7 HTTP/1.1
 Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5ueTgyIiwiaWQiOiI1ZjczNWM5YTVhNmRjODQ0YzA0ZGE4ODEiLCJpYXQiOjE2MDEzOTc0Mjd9.AX0JqO_ad6yV9BJVvHBLYLs2eBCi3we1VuGaj7jBCTw
 
-{
-	"title":"First Post"
-}
 ###
 POST  http://localhost:3001/api/blogs/
 Content-Type: application/json
