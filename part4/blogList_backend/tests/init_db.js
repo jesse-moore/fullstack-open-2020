@@ -1,11 +1,13 @@
+const bcrypt = require('bcrypt')
 const testData = require('./testData')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 
 const initUsers = async () => {
     await User.deleteMany({})
-    const savePromises = testData.users.map((user) => {
-        const userObject = new User(user)
+    const savePromises = testData.users.map(async (user) => {
+        const passwordHash = await bcrypt.hash(user.password, 10)
+        const userObject = new User({ ...user, passwordHash })
         return userObject.save()
     })
     return await Promise.all(savePromises)
