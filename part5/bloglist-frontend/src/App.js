@@ -26,7 +26,12 @@ const App = () => {
             />
             {user ? (
                 <>
-                    <BlogList blogs={blogs} setBlogs={setBlogs} />
+                    <BlogList
+                        user={user}
+                        blogs={blogs}
+                        setBlogs={setBlogs}
+                        setAppMessage={setAppMessage}
+                    />
                     <br />
                     <AddBlog
                         setBlogs={setBlogs}

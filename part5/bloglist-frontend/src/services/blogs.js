@@ -20,4 +20,12 @@ const likePost = (postID) => {
     return request.then((res) => res.data)
 }
 
-export default { getAll, postBlog, likePost }
+const deleteBlog = (postID) => {
+    const url = `${baseUrl}/${postID}`
+    const { token } = JSON.parse(window.localStorage.getItem('user'))
+    const config = { headers: { Authorization: `bearer ${token}` } }
+    const request = axios.delete(url, config)
+    return request.then((req) => req.status)
+}
+
+export default { getAll, postBlog, likePost, deleteBlog }

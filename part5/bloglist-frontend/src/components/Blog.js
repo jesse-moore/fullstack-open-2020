@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import { blogService } from '../services'
 
-const Blog = ({ blog, setBlogs }) => {
-    const [showDetails, setShowDetails] = useState(false)
-    const handleLike = async (event, id) => {
-        event.preventDefault()
+const Blog = ({ blog, setBlogs, setAppMessage, user }) => {
+    const [showDetails, setShowDetails] = useState(true)
+    const handleLike = async (id) => {
         const update = await blogService.likePost(id)
         setBlogs((blogs) => {
             const blogToUpdate = blogs.filter((blog) => blog.id === id)[0]
@@ -14,6 +13,31 @@ const Blog = ({ blog, setBlogs }) => {
             })
         })
     }
+
+    const handleDelete = async (id, title) => {
+        if (!window.confirm(`Delete ${title}`)) return
+        try {
+            await blogService.deleteBlog(id)
+        } catch (error) {
+            if (error.response.status === 401)
+                return setAppMessage({
+                    message: `Unauthorized to delete ${title}`,
+                    type: 'alert',
+                })
+
+            setAppMessage({
+                message: `Unable to delete ${title}`,
+                type: 'alert',
+            })
+        }
+        setAppMessage({
+            message: `Successfully deleted ${title}`,
+        })
+        setBlogs((blogs) => {
+            return blogs.filter((blog) => blog.id !== id)
+        })
+    }
+
     return (
         <div style={{ padding: '10px' }}>
             {blog.title}: {blog.author}{' '}
@@ -21,14 +45,20 @@ const Blog = ({ blog, setBlogs }) => {
                 {showDetails ? 'hide' : 'view'}
             </button>
             {showDetails ? (
-                <BlogDetails blog={blog} handleLike={handleLike} />
+                <BlogDetails
+                    blog={blog}
+                    handleLike={handleLike}
+                    handleDelete={handleDelete}
+                    user={user}
+                />
             ) : null}
         </div>
     )
 }
 
-const BlogDetails = ({ blog, handleLike }) => {
-    const { url, user, likes, id } = blog
+const BlogDetails = ({ blog, handleLike, handleDelete, user }) => {
+    const { url, likes, id, title } = blog
+    const showRemoveButton = user.username === blog.user.username
     return (
         <div>
             <div>
@@ -36,12 +66,15 @@ const BlogDetails = ({ blog, handleLike }) => {
             </div>
             <div>
                 <span style={{ fontWeight: 'bold' }}>Likes:</span> {likes}{' '}
-                <button onClick={(event) => handleLike(event, id)}>like</button>
+                <button onClick={() => handleLike(id)}>like</button>
             </div>
             <div>
                 <span style={{ fontWeight: 'bold' }}>Submitted By:</span>{' '}
-                {user.name}
+                {blog.user.name}
             </div>
+            {showRemoveButton ? (
+                <button onClick={() => handleDelete(id, title)}>remove</button>
+            ) : null}
         </div>
     )
 }
