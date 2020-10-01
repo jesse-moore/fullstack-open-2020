@@ -13,4 +13,11 @@ const postBlog = (newBlog) => {
     return request.then((res) => res.data)
 }
 
-export default { getAll, postBlog }
+const likePost = (postID) => {
+    const url = `${baseUrl}/${postID}/inclike`
+    const body = { likeInc: 1 }
+    const request = axios.put(url, body)
+    return request.then((res) => res.data)
+}
+
+export default { getAll, postBlog, likePost }

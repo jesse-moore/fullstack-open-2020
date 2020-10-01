@@ -26,7 +26,7 @@ const App = () => {
             />
             {user ? (
                 <>
-                    <BlogList blogs={blogs} />
+                    <BlogList blogs={blogs} setBlogs={setBlogs} />
                     <br />
                     <AddBlog
                         setBlogs={setBlogs}
