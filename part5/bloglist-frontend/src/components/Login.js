@@ -28,13 +28,13 @@ const Login = ({ user, setUser, setAppMessage }) => {
   const LoginForm = () => {
     return (
       <form onSubmit={login}>
-                username
+        username
         <input
           onChange={({ target }) => setUsername(target.value)}
           value={username}
         />
         <br />
-                password
+        password
         <input
           onChange={({ target }) => setPassword(target.value)}
           value={password}
@@ -49,7 +49,7 @@ const Login = ({ user, setUser, setAppMessage }) => {
   const User = ({ name }) => {
     return (
       <div>
-                logged in as {name} <button onClick={logout}>logout</button>
+        logged in as {name} <button onClick={logout}>logout</button>
       </div>
     )
   }
