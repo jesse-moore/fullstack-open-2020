@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { blogService } from '../services'
+import BlogDetails from './BlogDetails'
 
 const Blog = ({ blog, setBlogs, setAppMessage, user }) => {
   const [showDetails, setShowDetails] = useState(false)
@@ -51,29 +52,6 @@ const Blog = ({ blog, setBlogs, setAppMessage, user }) => {
           handleDelete={handleDelete}
           user={user}
         />
-      ) : null}
-    </div>
-  )
-}
-
-const BlogDetails = ({ blog, handleLike, handleDelete, user }) => {
-  const { url, likes, id, title } = blog
-  const showRemoveButton = user.username === blog.user.username
-  return (
-    <div>
-      <div>
-        <span style={{ fontWeight: 'bold' }}>URL:</span> {url}
-      </div>
-      <div>
-        <span style={{ fontWeight: 'bold' }}>Likes:</span> {likes}{' '}
-        <button onClick={() => handleLike(id)}>like</button>
-      </div>
-      <div>
-        <span style={{ fontWeight: 'bold' }}>Submitted By:</span>{' '}
-        {blog.user.name}
-      </div>
-      {showRemoveButton ? (
-        <button onClick={() => handleDelete(id, title)}>remove</button>
       ) : null}
     </div>
   )

@@ -16,14 +16,34 @@ const App = () => {
     if (userData) setUser(userData)
   }, [])
 
+  const addBlog = async ({ title, author, url }) => {
+    try {
+      const newBlog = await blogService.postBlog({ title, author, url })
+      setBlogs((blogs) => {
+        return [...blogs, newBlog]
+      })
+      setAppMessage({
+        message: `Successfully added new blog post ${title} by ${author}`,
+        type: 'notif',
+      })
+      setTimeout(() => {
+        setAppMessage({})
+      }, 5000)
+    } catch (error) {
+      setAppMessage({
+        message: `Error adding new blog post ${title}`,
+        type: 'alert',
+      })
+      setTimeout(() => {
+        setAppMessage({})
+      }, 5000)
+    }
+  }
+
   return (
     <div>
       <AppMessage appMessage={appMessage} setAppMessage={setAppMessage} />
-      <Login
-        user={user}
-        setUser={setUser}
-        setAppMessage={setAppMessage}
-      />
+      <Login user={user} setUser={setUser} setAppMessage={setAppMessage} />
       {user ? (
         <>
           <BlogList
@@ -33,10 +53,7 @@ const App = () => {
             setAppMessage={setAppMessage}
           />
           <br />
-          <AddBlog
-            setBlogs={setBlogs}
-            setAppMessage={setAppMessage}
-          />
+          <AddBlog addBlog={addBlog} />
         </>
       ) : null}
     </div>

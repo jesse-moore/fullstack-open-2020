@@ -1,13 +1,8 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
-const AppMessage = ({ appMessage, setAppMessage }) => {
-  const { message = '', type = '', time = 5000 } = appMessage
+const AppMessage = ({ appMessage }) => {
+  const { message = '', type = '' } = appMessage
   if (message === '') return null
-  useEffect(() => {
-    setTimeout(() => {
-      setAppMessage({})
-    }, time)
-  }, [])
   const defaultStyle = {
     fontWeight: 'bold',
     fontSize: '1.25em',
@@ -23,7 +18,7 @@ const AppMessage = ({ appMessage, setAppMessage }) => {
     backgroundColor: '#d4edda',
   }
   const messageStyle =
-        type === 'alert' ? alertStyle : type === 'notif' ? notifStyle : {}
+    type === 'alert' ? alertStyle : type === 'notif' ? notifStyle : {}
   const styles = { ...defaultStyle, ...messageStyle }
   return (
     <div style={styles}>
