@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 
 const AddBlogForm = ({ addBlog, setShowForm }) => {
-  const [title, setTitle] = useState('Title')
-  const [author, setAuthor] = useState('Author')
-  const [url, setUrl] = useState('/')
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
   const handleSubmit = async (event) => {
     event.preventDefault()

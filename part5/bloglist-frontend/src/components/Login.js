@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { loginService } from '../services'
 
 const Login = ({ user, setUser, setAppMessage }) => {
-  const [username, setUsername] = useState('johnny82')
-  const [password, setPassword] = useState('password123')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const login = async (event) => {
     event.preventDefault()
     try {
@@ -23,45 +23,42 @@ const Login = ({ user, setUser, setAppMessage }) => {
       type: 'alert',
       time: 5000,
     })
-  }
-
-  const LoginForm = () => {
-    return (
-      <form onSubmit={login}>
-        <label>
-          username
-          <input
-            onChange={({ target }) => setUsername(target.value)}
-            value={username}
-          />
-        </label>
-        <br />
-        <label>
-          password
-          <input
-            onChange={({ target }) => setPassword(target.value)}
-            value={password}
-            type="password"
-          />
-        </label>
-        <br />
-        <button type="submit">login</button>
-      </form>
-    )
-  }
-
-  const User = ({ name }) => {
-    return (
-      <div>
-        logged in as {name} <button onClick={logout}>logout</button>
-      </div>
-    )
+    setTimeout(() => {
+      setAppMessage({})
+    }, 5000)
   }
 
   return (
     <div>
       <h2>log in to application</h2>
-      {user ? <User name={user.name} /> : <LoginForm />}
+      {user ? (
+        <div>
+          logged in as {user.name} <button onClick={logout}>logout</button>
+        </div>
+      ) : (
+        <form onSubmit={login}>
+          <label>
+            username
+            <input
+              onChange={({ target }) => setUsername(target.value)}
+              value={username}
+              autoComplete="username"
+            />
+          </label>
+          <br />
+          <label>
+            password
+            <input
+              onChange={({ target }) => setPassword(target.value)}
+              value={password}
+              type="password"
+              autoComplete="current-password"
+            />
+          </label>
+          <br />
+          <button type="submit">login</button>
+        </form>
+      )}
     </div>
   )
 }
