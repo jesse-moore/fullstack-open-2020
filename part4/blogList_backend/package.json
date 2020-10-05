@@ -11,7 +11,8 @@
         "lint": "eslint .",
         "test:blogs": "NODE_ENV=test jest ./tests/blog_api.test.js --verbose --runInBand",
         "test:users": "NODE_ENV=test jest ./tests/user_api.test.js --verbose --runInBand",
-        "test:client": "NODE_ENV=test jest ./tests/client.test.js --verbose --runInBand"
+		"test:client": "NODE_ENV=test jest ./tests/client.test.js --verbose --runInBand",
+		"start:test": "NODE_ENV=test nodemon index.js"
     },
     "author": "",
     "license": "ISC",

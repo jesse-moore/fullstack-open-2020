@@ -28,18 +28,22 @@ const Login = ({ user, setUser, setAppMessage }) => {
   const LoginForm = () => {
     return (
       <form onSubmit={login}>
-        username
-        <input
-          onChange={({ target }) => setUsername(target.value)}
-          value={username}
-        />
+        <label>
+          username
+          <input
+            onChange={({ target }) => setUsername(target.value)}
+            value={username}
+          />
+        </label>
         <br />
-        password
-        <input
-          onChange={({ target }) => setPassword(target.value)}
-          value={password}
-          type="password"
-        />
+        <label>
+          password
+          <input
+            onChange={({ target }) => setPassword(target.value)}
+            value={password}
+            type="password"
+          />
+        </label>
         <br />
         <button type="submit">login</button>
       </form>
