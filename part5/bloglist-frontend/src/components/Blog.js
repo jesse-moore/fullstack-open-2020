@@ -30,10 +30,16 @@ const Blog = ({ blog, setBlogs, setAppMessage, user }) => {
         message: `Unable to delete ${title}`,
         type: 'alert',
       })
+      setTimeout(() => {
+        setAppMessage({})
+      }, 5000)
     }
     setAppMessage({
       message: `Successfully deleted ${title}`,
     })
+    setTimeout(() => {
+      setAppMessage({})
+    }, 5000)
     setBlogs((blogs) => {
       return blogs.filter((blog) => blog.id !== id)
     })
