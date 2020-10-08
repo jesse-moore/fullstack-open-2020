@@ -26,10 +26,17 @@ const reducer = (state = initialState, action) => {
             return state.map((e) =>
                 e.id === data.id ? { ...e, votes: e.votes + 1 } : e
             )
-
+        case 'NEWANECDOTE':
+            return [...state, data]
         default:
-            console.log('SKIPPED')
             return state
+    }
+}
+
+export const newAnecdote = (anecdote) => {
+    return {
+        type: 'NEWANECDOTE',
+        data: asObject(anecdote),
     }
 }
 
