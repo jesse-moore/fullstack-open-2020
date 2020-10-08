@@ -11,9 +11,8 @@ export default () => {
         dipatch(setFilter(filter))
     }
     return (
-        <div>
+        <div style={{ marginBottom: '20px' }}>
             Filter: <input onChange={handleChange} />
-            <br />
         </div>
     )
 }
