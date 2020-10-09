@@ -5,17 +5,23 @@ const reducer = (state = '', action) => {
             return data.message
         case 'REMOVENOTIFICATION':
             return ''
-        case 'VOTE':
-            return `you voted '${data.content}'`
         default:
             return state
     }
 }
 
-export const setNotification = (message) => {
-    return {
-        type: 'SETNOTIFICATION',
-        data: { message },
+export const setNotification = (message, timeout = 5000) => {
+    return async (dispatch) => {
+        setTimeout(() => {
+            dispatch({
+                type: 'SETNOTIFICATION',
+                data: { message: '' },
+            })
+        }, timeout)
+        dispatch({
+            type: 'SETNOTIFICATION',
+            data: { message },
+        })
     }
 }
 

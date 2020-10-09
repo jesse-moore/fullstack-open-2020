@@ -1,7 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { saveNewAnecdote } from '../reducers/anecdoteReducer'
-import { postAnecdote } from '../services/anecdotes'
 
 export default () => {
     const dispatch = useDispatch()
@@ -10,9 +9,7 @@ export default () => {
         event.preventDefault()
         const anecdote = event.target.anecdote.value
         event.target.anecdote.value = ''
-        const newAnecdote = await postAnecdote(anecdote)
-        console.log(newAnecdote)
-        dispatch(saveNewAnecdote(newAnecdote))
+        dispatch(saveNewAnecdote(anecdote))
     }
 
     return (
