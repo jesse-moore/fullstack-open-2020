@@ -1,3 +1,5 @@
+let clearNotif
+
 const reducer = (state = '', action) => {
     const { type, data } = action
     switch (type) {
@@ -12,10 +14,10 @@ const reducer = (state = '', action) => {
 
 export const setNotification = (message, timeout = 5000) => {
     return async (dispatch) => {
-        setTimeout(() => {
+        if (clearNotif) clearTimeout(clearNotif)
+        clearNotif = setTimeout(() => {
             dispatch({
-                type: 'SETNOTIFICATION',
-                data: { message: '' },
+                type: 'REMOVENOTIFICATION',
             })
         }, timeout)
         dispatch({
@@ -25,7 +27,7 @@ export const setNotification = (message, timeout = 5000) => {
     }
 }
 
-export const removeNotification = (message) => {
+export const removeNotification = () => {
     return {
         type: 'REMOVENOTIFICATION',
     }
