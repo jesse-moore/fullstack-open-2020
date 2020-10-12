@@ -1,0 +1,34 @@
+DELETE http://localhost:3001/api/blogs/5f71d12e576c38347013a112 HTTP/1.1 
+###
+PUT  http://localhost:3001/api/blogs/5f71c22e851bf24d58450b82/inclike HTTP/1.1
+Content-Type: application/json
+
+{
+	"likeInc":3
+}
+###
+DELETE  http://localhost:3001/api/blogs/5f737092f426e81cac9e3bb7 HTTP/1.1
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pa2U3NCIsImlkIjoiNWY3MzVjOWE1YTZkYzg0NGMwNGRhODdmIiwiaWF0IjoxNjAxNDAyOTIzfQ.DCZ0Yifg2ZwK2iav-pHF9ry23gd001HhUMFDPvCWmgk
+
+###
+DELETE  http://localhost:3001/api/blogs/5f737092f426e81cac9e3bb7 HTTP/1.1
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5ueTgyIiwiaWQiOiI1ZjczNWM5YTVhNmRjODQ0YzA0ZGE4ODEiLCJpYXQiOjE2MDEzOTc0Mjd9.AX0JqO_ad6yV9BJVvHBLYLs2eBCi3we1VuGaj7jBCTw
+
+###
+POST  http://localhost:3001/api/blogs/
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5ueTgyIiwiaWQiOiI1ZjczNWM5YTVhNmRjODQ0YzA0ZGE4ODEiLCJpYXQiOjE2MDEzOTc0Mjd9.AX0JqO_ad6yV9BJVvHBLYLs2eBCi3we1VuGaj7jBCTw
+
+{
+	"title":"First Blog",
+	"author":"Matt Baker",
+	"url": "/"
+}
+###
+GET http://localhost:3001/api/blogs/5f71c22e851bf24d58450b82 HTTP/1.1
+###
+GET http://localhost:3001/api/blogs HTTP/1.1
+###
+POST  http://localhost:3001/api/testing/reset
