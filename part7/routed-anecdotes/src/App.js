@@ -8,6 +8,7 @@ import {
     useRouteMatch,
     useHistory,
 } from 'react-router-dom'
+import { useField } from './hooks'
 
 const Menu = () => {
     const padding = {
@@ -33,8 +34,8 @@ const AnecdoteList = ({ anecdotes }) => (
         <h2>Anecdotes</h2>
         <ul>
             {anecdotes.map((anecdote) => (
-                <Link to={`/anecdotes/${anecdote.id}`}>
-                    <li key={anecdote.id}>{anecdote.content}</li>
+                <Link to={`/anecdotes/${anecdote.id}`} key={anecdote.id}>
+                    <li>{anecdote.content}</li>
                 </Link>
             ))}
         </ul>
@@ -87,18 +88,26 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-    const [content, setContent] = useState('')
-    const [author, setAuthor] = useState('')
-    const [info, setInfo] = useState('')
+    const content = useField('content')
+    const author = useField('author')
+    const info = useField('info')
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        console.log(e.target)
         props.addNew({
-            content,
-            author,
-            info,
+            content: content.value,
+            author: author.value,
+            info: info.value,
             votes: 0,
         })
+    }
+
+    const handleReset = (e) => {
+        e.preventDefault()
+        content.reset()
+        author.reset()
+        info.reset()
     }
 
     return (
@@ -107,29 +116,18 @@ const CreateNew = (props) => {
             <form onSubmit={handleSubmit}>
                 <div>
                     content
-                    <input
-                        name="content"
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                    />
+                    <input {...content.attributes} />
                 </div>
                 <div>
                     author
-                    <input
-                        name="author"
-                        value={author}
-                        onChange={(e) => setAuthor(e.target.value)}
-                    />
+                    <input {...author.attributes} />
                 </div>
                 <div>
                     url for more info
-                    <input
-                        name="info"
-                        value={info}
-                        onChange={(e) => setInfo(e.target.value)}
-                    />
+                    <input {...info.attributes} />
                 </div>
                 <button>create</button>
+                <button onClick={handleReset}>reset</button>
             </form>
         </div>
     )
