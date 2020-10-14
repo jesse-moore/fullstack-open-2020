@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
+import { Switch, Route } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import BlogList from './components/BlogList'
-import AddBlog from './components/AddBlog'
-import AppMessage from './components/AppMessage'
-import Login from './components/Login'
+import { BlogList, AddBlog, AppMessage, Login, Users } from './components/'
 import { initBlogs } from './reducers/blogReducer'
 import { checkUser } from './reducers/userReducer'
 
@@ -20,13 +18,20 @@ const App = () => {
     <div>
       <AppMessage />
       <Login />
-      {user ? (
-        <>
-          <BlogList user={user} />
-          <br />
-          <AddBlog />
-        </>
-      ) : null}
+      <Switch>
+        <Route path="/users">
+          <Users />
+        </Route>
+        <Route path="/">
+          {user ? (
+            <>
+              <BlogList user={user} />
+              <br />
+              <AddBlog />
+            </>
+          ) : null}
+        </Route>
+      </Switch>
     </div>
   )
 }

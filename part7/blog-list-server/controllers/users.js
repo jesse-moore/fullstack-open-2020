@@ -30,6 +30,16 @@ usersRouter.get('/', async (req, res) => {
     res.json(users)
 })
 
+usersRouter.get('/postcount', async (req, res) => {
+    const users = await User.find({}).populate('blogs', {
+        title: 1,
+    })
+    const usersPostCount = users.map((user) => {
+        return { name: user.name, blogs: user.blogs.length }
+    })
+    res.json(usersPostCount)
+})
+
 usersRouter.get('/:id', async (req, res) => {
     const id = req.params.id
     const user = await User.findById(id).populate('blogs', {

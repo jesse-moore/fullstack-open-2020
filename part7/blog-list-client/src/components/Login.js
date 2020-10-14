@@ -18,36 +18,39 @@ const Login = () => {
   }
 
   return (
-    <div>
-      <h2>log in to application</h2>
+    <div style={{ marginBottom: '25px' }}>
       {user.name ? (
         <div>
+          <h2>blogs</h2>
           logged in as {user.name}{' '}
           <button onClick={handleLogout}>logout</button>
         </div>
       ) : (
-        <form onSubmit={handleLogin}>
-          <label>
-            username
-            <input
-              onChange={({ target }) => setUsername(target.value)}
-              value={username}
-              autoComplete="username"
-            />
-          </label>
-          <br />
-          <label>
-            password
-            <input
-              onChange={({ target }) => setPassword(target.value)}
-              value={password}
-              type="password"
-              autoComplete="current-password"
-            />
-          </label>
-          <br />
-          <button type="submit">login</button>
-        </form>
+        <>
+          <h2>log in to application</h2>
+          <form onSubmit={handleLogin}>
+            <label>
+              username
+              <input
+                onChange={({ target }) => setUsername(target.value)}
+                value={username}
+                autoComplete="username"
+              />
+            </label>
+            <br />
+            <label>
+              password
+              <input
+                onChange={({ target }) => setPassword(target.value)}
+                value={password}
+                type="password"
+                autoComplete="current-password"
+              />
+            </label>
+            <br />
+            <button type="submit">login</button>
+          </form>
+        </>
       )}
     </div>
   )
