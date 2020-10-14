@@ -1,42 +1,32 @@
 import React, { useState } from 'react'
-import { loginService } from '../services'
+import { useDispatch, useSelector } from 'react-redux'
+import { login, logout } from '../reducers/userReducer'
 
-const Login = ({ user, setUser, setAppMessage }) => {
+const Login = () => {
+  const dispatch = useDispatch()
+  const user = useSelector((state) => state.user)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const login = async (event) => {
-    event.preventDefault()
-    try {
-      const user = await loginService.handleLogin(username, password)
-      setUser(user)
-    } catch (error) {
-      handleError(error)
-    }
+
+  const handleLogin = (e) => {
+    e.preventDefault()
+    dispatch(login(username, password))
   }
-  const logout = () => {
-    loginService.handleLogout()
-    setUser(null)
-  }
-  const handleError = () => {
-    setAppMessage({
-      message: 'Invalid username or password',
-      type: 'alert',
-      time: 5000,
-    })
-    setTimeout(() => {
-      setAppMessage({})
-    }, 5000)
+
+  const handleLogout = () => {
+    dispatch(logout())
   }
 
   return (
     <div>
       <h2>log in to application</h2>
-      {user ? (
+      {user.name ? (
         <div>
-          logged in as {user.name} <button onClick={logout}>logout</button>
+          logged in as {user.name}{' '}
+          <button onClick={handleLogout}>logout</button>
         </div>
       ) : (
-        <form onSubmit={login}>
+        <form onSubmit={handleLogin}>
           <label>
             username
             <input

@@ -1,14 +1,17 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { saveNewBlog } from '../reducers/blogReducer'
 
-const AddBlogForm = ({ addBlog, setShowForm }) => {
+const AddBlogForm = ({ setShowForm }) => {
+  const dispatch = useDispatch()
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    await addBlog({ title, author, url })
-    setShowForm(false)
+    dispatch(saveNewBlog({ title, author, url }))
+    await setShowForm(false)
   }
   return (
     <div>

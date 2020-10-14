@@ -1,8 +1,9 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 
-const AppMessage = ({ appMessage }) => {
-  const { message = '', type = '' } = appMessage
-  if (message === '') return null
+const AppMessage = () => {
+  const { message, type } = useSelector((state) => state.message)
+  if (!message) return null
   const defaultStyle = {
     fontWeight: 'bold',
     fontSize: '1.25em',
