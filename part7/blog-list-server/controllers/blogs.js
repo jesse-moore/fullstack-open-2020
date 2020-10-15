@@ -1,9 +1,14 @@
 const blogsRouter = require('express').Router()
 const { isUserDocOwner, userIDFromToken } = require('../utils')
 const Blog = require('../models/blog')
+const Comment = require('../models/comment')
 
 blogsRouter.get('/', async (req, res) => {
-    const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
+    const blogs = await Blog.find({})
+        .populate('user', { username: 1, name: 1 })
+        .populate('comments', {
+            comment: 1,
+        })
     res.json(blogs)
 })
 
@@ -14,6 +19,21 @@ blogsRouter.get('/:id', async (req, res) => {
         name: 1,
     })
     res.json(blog)
+})
+
+blogsRouter.get('/:id/comments', async (req, res) => {
+	console.log('HERE')
+    const id = req.params.id
+    const comments = await Comment.find({ blogID: id })
+    res.json(comments)
+})
+
+blogsRouter.post('/:id/comment', async (req, res) => {
+    await userIDFromToken(req.token)
+    const blogID = req.params.id
+    const comment = new Comment({ blogID, comment: req.body.comment })
+    const result = await comment.save()
+    res.status(201).json(result)
 })
 
 blogsRouter.post('/', async (req, res) => {

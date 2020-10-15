@@ -8,7 +8,6 @@ const BlogList = ({ setAppMessage, user }) => {
   const blogSort = (blogA, blogB) => {
     return blogB.likes - blogA.likes
   }
-
   return (
     <div>
       <h2>blogs</h2>

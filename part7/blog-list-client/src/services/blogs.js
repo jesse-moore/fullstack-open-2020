@@ -10,6 +10,15 @@ const getAll = () => {
   }
 }
 
+const getComments = (blogID) => {
+  try {
+    const request = axios.get(`${baseUrl}/${blogID}/comments`)
+    return request.then((response) => response.data)
+  } catch (error) {
+    return { error }
+  }
+}
+
 const postBlog = (newBlog) => {
   try {
     const { token } = JSON.parse(window.localStorage.getItem('user'))
@@ -18,6 +27,18 @@ const postBlog = (newBlog) => {
     return request.then((res) => res.data)
   } catch (error) {
     return { error: `Error adding post ${newBlog.title}` }
+  }
+}
+
+const postComment = (comment) => {
+  const { blogID } = comment
+  try {
+    const { token } = JSON.parse(window.localStorage.getItem('user'))
+    const config = { headers: { Authorization: `bearer ${token}` } }
+    const request = axios.post(`${baseUrl}/${blogID}/comment`, comment, config)
+    return request.then((res) => res.data)
+  } catch (error) {
+    return { error }
   }
 }
 
@@ -44,4 +65,11 @@ const deleteBlog = (postID) => {
   }
 }
 
-export default { getAll, postBlog, likePost, deleteBlog }
+export default {
+  getAll,
+  getComments,
+  postBlog,
+  likePost,
+  deleteBlog,
+  postComment,
+}

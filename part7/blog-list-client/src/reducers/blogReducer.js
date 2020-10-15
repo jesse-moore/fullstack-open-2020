@@ -15,6 +15,8 @@ const reducer = (state = [], action) => {
       return state.map((blog) => {
         return blog.id === data.id ? { ...blog, likes: blog.likes + 1 } : blog
       })
+    case 'COMMENT':
+      return data.blogs
     default:
       return state
   }
@@ -48,6 +50,26 @@ export const saveNewBlog = (newBlog) => {
       dispatch(
         notifMessage({
           message: `Successfully added new blog post ${newBlog.title} by ${newBlog.author}`,
+        })
+      )
+    }
+  }
+}
+
+export const saveNewComment = (newComment) => {
+  return async (dispatch) => {
+    const res = await blogService.postComment(newComment)
+    if (res.error) {
+      dispatch(alertMessage({ message: res.error }))
+    } else {
+      const blogs = await blogService.getAll()
+      dispatch({
+        type: 'COMMENT',
+        data: { blogs },
+      })
+      dispatch(
+        notifMessage({
+          message: 'Successfully added comment',
         })
       )
     }

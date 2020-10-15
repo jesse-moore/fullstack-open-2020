@@ -4,6 +4,7 @@ import AppMessage from './AppMessage'
 import Blog from './Blog'
 import BlogDetails from './BlogDetails'
 import BlogList from './BlogList'
+import CommentForm from './CommentForm'
 import Login from './Login'
 import Navigation from './Navigation'
 import Users from './Users'
@@ -16,6 +17,7 @@ export {
   Blog,
   BlogDetails,
   BlogList,
+  CommentForm,
   Login,
   Navigation,
   Users,
