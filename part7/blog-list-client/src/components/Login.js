@@ -21,7 +21,6 @@ const Login = () => {
     <div style={{ marginBottom: '25px' }}>
       {user.name ? (
         <div>
-          <h2>blogs</h2>
           logged in as {user.name}{' '}
           <button onClick={handleLogout}>logout</button>
         </div>

@@ -2,8 +2,12 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { likeBlog, deleteBlog } from '../reducers/blogReducer'
 
-const BlogDetails = ({ blog }) => {
+const BlogDetails = ({ match }) => {
+  const blogID = match.params.id
   const user = useSelector((state) => state.user)
+  const blog = useSelector((state) =>
+    state.blogs.find((blog) => blog.id === blogID)
+  )
   const dispatch = useDispatch()
   const handleLike = async (id) => {
     dispatch(likeBlog(id, title))
@@ -13,10 +17,12 @@ const BlogDetails = ({ blog }) => {
     if (!window.confirm(`Delete ${title}`)) return
     dispatch(deleteBlog(id, title))
   }
+  if (!blog || !user) return null
   const { url, likes, id, title } = blog
   const showRemoveButton = user.username === blog.user.username
   return (
     <div>
+      <h2>{title}</h2>
       <div>
         <span style={{ fontWeight: 'bold' }}>URL:</span> {url}
       </div>

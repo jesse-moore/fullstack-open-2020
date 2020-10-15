@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { userService } from '../services'
 
 export default function Users() {
@@ -6,8 +7,8 @@ export default function Users() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await userService.getUsersPostCount()
-      setUserPostCount(res.data)
+      const data = await userService.getUsersPostCount()
+      setUserPostCount(data)
     }
     fetchData()
   }, [])
@@ -26,10 +27,12 @@ export default function Users() {
 }
 
 const User = (user) => {
-  const { name, blogs } = user
+  const { name, blogs, id } = user
   return (
     <div>
-      <span style={{ marginRight: '100px' }}>{name}</span>
+      <Link to={`users/${id}`}>
+        <span style={{ marginRight: '100px' }}>{name}</span>
+      </Link>
       <span>{blogs}</span>
     </div>
   )

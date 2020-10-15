@@ -1,16 +1,12 @@
-import React, { useState } from 'react'
-import BlogDetails from './BlogDetails'
+import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Blog = ({ blog }) => {
-  const [showDetails, setShowDetails] = useState(false)
-
   return (
     <div style={{ padding: '10px' }}>
-      {blog.title}: {blog.author}{' '}
-      <button onClick={() => setShowDetails(!showDetails)}>
-        {showDetails ? 'hide' : 'view'}
-      </button>
-      {showDetails ? <BlogDetails blog={blog} /> : null}
+      <Link to={`/blogs/${blog.id}`}>
+        {blog.title}: {blog.author}
+      </Link>
     </div>
   )
 }

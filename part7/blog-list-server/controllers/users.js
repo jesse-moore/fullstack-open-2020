@@ -35,7 +35,7 @@ usersRouter.get('/postcount', async (req, res) => {
         title: 1,
     })
     const usersPostCount = users.map((user) => {
-        return { name: user.name, blogs: user.blogs.length }
+        return { name: user.name, id: user.id, blogs: user.blogs.length }
     })
     res.json(usersPostCount)
 })
