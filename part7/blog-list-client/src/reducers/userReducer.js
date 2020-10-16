@@ -11,7 +11,7 @@ const reducer = (state = {}, action) => {
     case 'CHECKUSER':
       return data.user
     case 'LOGOUT':
-      return {}
+      return data.user
     default:
       return state
   }
@@ -46,6 +46,7 @@ export const logout = () => {
     loginService.handleLogout()
     dispatch({
       type: 'LOGOUT',
+      data: { user: { isLoggedIn: false } },
     })
   }
 }

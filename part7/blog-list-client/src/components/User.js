@@ -1,7 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { userService } from '../services'
 
+import { makeStyles } from '@material-ui/core/styles'
+import {
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+} from '@material-ui/core'
+
+const useStyles = makeStyles(() => ({
+  root: {
+    width: '400px',
+  },
+}))
+
 export default function User({ match }) {
+  const classes = useStyles()
   const [user, setUser] = useState({})
   const userID = match.params.id
 
@@ -16,15 +32,25 @@ export default function User({ match }) {
   if (user.error) return <UserError {...user} />
   if (!user.name) return null
   return (
-    <div>
+    <>
       <h2>{user.name}</h2>
-      <h3>added blogs</h3>
-      <ul>
-        {user.blogs.map((blog) => {
-          return <li key={blog.id}>{blog.title}</li>
-        })}
-      </ul>
-    </div>
+      <Table className={classes.root}>
+        <TableHead>
+          <TableRow>
+            <TableCell>Added blogs</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {user.blogs.map((blog) => {
+            return (
+              <TableRow key={blog.id}>
+                <TableCell>{blog.title}</TableCell>
+              </TableRow>
+            )
+          })}
+        </TableBody>
+      </Table>
+    </>
   )
 }
 

@@ -2,7 +2,23 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { userService } from '../services'
 
+import { makeStyles } from '@material-ui/core/styles'
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  TableCell,
+} from '@material-ui/core'
+
+const useStyles = makeStyles(() => ({
+  root: {
+    width: '400px',
+  },
+}))
+
 export default function Users() {
+  const classes = useStyles()
   const [userPostCount, setUserPostCount] = useState([])
 
   useEffect(() => {
@@ -14,26 +30,30 @@ export default function Users() {
   }, [])
 
   return (
-    <div>
-      <div style={{ fontWeight: 'bold' }}>
-        <span style={{ marginRight: '100px' }}>User</span>
-        <span>Blogs created</span>
-      </div>
-      {userPostCount.map((user) => (
-        <User {...user} key={user.name} />
-      ))}
-    </div>
+    <Table className={classes.root}>
+      <TableHead>
+        <TableRow>
+          <TableCell>User</TableCell>
+          <TableCell>Blogs Created</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {userPostCount.map((user) => (
+          <User {...user} key={user.name} />
+        ))}
+      </TableBody>
+    </Table>
   )
 }
 
 const User = (user) => {
   const { name, blogs, id } = user
   return (
-    <div>
-      <Link to={`users/${id}`}>
-        <span style={{ marginRight: '100px' }}>{name}</span>
-      </Link>
-      <span>{blogs}</span>
-    </div>
+    <TableRow>
+      <TableCell>
+        <Link to={`users/${id}`}>{name}</Link>
+      </TableCell>
+      <TableCell>{blogs}</TableCell>
+    </TableRow>
   )
 }

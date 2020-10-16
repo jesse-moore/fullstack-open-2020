@@ -1,9 +1,10 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 
+import { List } from '@material-ui/core'
 import Blog from './Blog'
 
-const BlogList = ({ setAppMessage, user }) => {
+const BlogList = () => {
   const blogs = useSelector((state) => state.blogs)
   const blogSort = (blogA, blogB) => {
     return blogB.likes - blogA.likes
@@ -11,14 +12,11 @@ const BlogList = ({ setAppMessage, user }) => {
   return (
     <div>
       <h2>blogs</h2>
-      {blogs.sort(blogSort).map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          setAppMessage={setAppMessage}
-          user={user}
-        />
-      ))}
+      <List>
+        {blogs.sort(blogSort).map((blog) => (
+          <Blog key={blog.id} blog={blog} />
+        ))}
+      </List>
     </div>
   )
 }

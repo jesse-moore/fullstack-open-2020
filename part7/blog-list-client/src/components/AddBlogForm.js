@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { saveNewBlog } from '../reducers/blogReducer'
 
+import { Button } from '@material-ui/core'
+
 const AddBlogForm = ({ setShowForm }) => {
   const dispatch = useDispatch()
   const [title, setTitle] = useState('')
@@ -38,7 +40,7 @@ const AddBlogForm = ({ setShowForm }) => {
           <input onChange={({ target }) => setUrl(target.value)} value={url} />
         </label>
         <br />
-        <button type="submit">Add Blog</button>
+        <Button type="submit" variant="contained" >Add Blog</Button>
       </form>
     </div>
   )

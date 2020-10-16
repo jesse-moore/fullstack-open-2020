@@ -9,9 +9,12 @@ import {
   Users,
   User,
   Navigation,
+  Login,
 } from './components/'
 import { initBlogs } from './reducers/blogReducer'
 import { checkUser } from './reducers/userReducer'
+
+import { Container } from '@material-ui/core'
 
 const App = () => {
   const user = useSelector((state) => state.user)
@@ -23,26 +26,31 @@ const App = () => {
   }, [dispatch])
 
   return (
-    <div>
-      <AppMessage />
-      <Navigation />
-      <Switch>
-        <Route path="/users/:id" component={User} />
-        <Route path="/users">
-          <Users />
-        </Route>
-        <Route path="/blogs/:id" component={BlogDetails} />
-        <Route path="/">
-          {user ? (
-            <>
-              <BlogList user={user} />
-              <br />
-              <AddBlog />
-            </>
-          ) : null}
-        </Route>
-      </Switch>
-    </div>
+    <Container maxsize="lg">
+      <div>
+        <AppMessage />
+        <Navigation />
+        <Switch>
+          <Route path="/users/:id" component={User} />
+          <Route path="/users">
+            <Users />
+          </Route>
+          <Route path="/blogs/:id" component={BlogDetails} />
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/">
+            {user ? (
+              <>
+                <BlogList user={user} />
+                <br />
+                <AddBlog />
+              </>
+            ) : null}
+          </Route>
+        </Switch>
+      </div>
+    </Container>
   )
 }
 export default App

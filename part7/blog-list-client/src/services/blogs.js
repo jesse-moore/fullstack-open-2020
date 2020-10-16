@@ -26,6 +26,7 @@ const postBlog = (newBlog) => {
     const request = axios.post(baseUrl, newBlog, config)
     return request.then((res) => res.data)
   } catch (error) {
+    if (error.name === 'TypeError') return { error: 'Unathorized' }
     return { error: `Error adding post ${newBlog.title}` }
   }
 }
@@ -38,7 +39,8 @@ const postComment = (comment) => {
     const request = axios.post(`${baseUrl}/${blogID}/comment`, comment, config)
     return request.then((res) => res.data)
   } catch (error) {
-    return { error }
+    if (error.name === 'TypeError') return { error: 'Unathorized' }
+    return { error: 'Error adding comment' }
   }
 }
 

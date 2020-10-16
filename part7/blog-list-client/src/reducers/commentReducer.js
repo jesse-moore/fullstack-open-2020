@@ -18,7 +18,7 @@ export const saveNewComment = (newComment) => {
   return async (dispatch) => {
     const data = await blogService.postComment(newComment)
     if (data.error) {
-      dispatch(alertMessage({ message: data.error }))
+        dispatch(alertMessage({ message: data.error }))
     } else {
       dispatch({
         type: 'ADDCOMMENT',
@@ -39,7 +39,6 @@ export const getComments = (id) => {
     if (data.error) {
       dispatch(alertMessage({ message: data.error }))
     } else {
-      console.log(data)
       dispatch({
         type: 'GETCOMMENTS',
         data: data,

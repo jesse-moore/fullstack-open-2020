@@ -10,6 +10,7 @@ const handleLogin = async (username, password) => {
       name: data.name,
       username: data.username,
       token: data.token,
+      isLoggedIn: true,
     }
     window.localStorage.setItem('user', JSON.stringify(user))
     return user
@@ -24,7 +25,9 @@ const handleLogout = () => {
 
 const isLoggedIn = () => {
   const user = window.localStorage.getItem('user')
-  return user ? JSON.parse(user) : {}
+  return user
+    ? { ...JSON.parse(user), isLoggedIn: true }
+    : { isLoggedIn: false }
 }
 
 export default { handleLogin, handleLogout, isLoggedIn }
