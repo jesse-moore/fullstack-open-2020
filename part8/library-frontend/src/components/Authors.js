@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { gql, useQuery } from '@apollo/client'
+import React from 'react'
+import { useQuery } from '@apollo/client'
 import { ALL_AUTHORS } from '../queries'
 
 const Authors = (props) => {
@@ -19,7 +19,7 @@ const Authors = (props) => {
                         <th>books</th>
                     </tr>
                     {authors.map((a) => (
-                        <tr key={a.name}>
+                        <tr key={a.id}>
                             <td>{a.name}</td>
                             <td>{a.born}</td>
                             <td>{a.bookCount}</td>

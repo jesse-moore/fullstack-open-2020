@@ -113,11 +113,8 @@ const typeDefs = gql`
             published: Int!
             author: String!
             genres: [String!]!
-		): Book
-		editAuthor(
-			name: String
-			setBornTo: Int
-		): Author
+        ): Book
+        editAuthor(name: String, setBornTo: Int): Author
     }
 `
 
@@ -146,7 +143,7 @@ const resolvers = {
             const book = { ...args, id: uuid() }
             books = [...books, book]
             if (!authors.find((author) => args.author === author.name)) {
-                author = { name: args.author }
+                author = { name: args.author, id: uuid() }
                 authors = [...authors, author]
             }
             return book
