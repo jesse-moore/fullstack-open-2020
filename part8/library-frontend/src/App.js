@@ -1,34 +1,60 @@
-
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useApolloClient } from '@apollo/client'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
+import LoginForm from './components/LoginForm'
 
 const App = () => {
-  const [page, setPage] = useState('authors')
+    const [page, setPage] = useState('authors')
+    const [token, setToken] = useState(null)
+    const [errorMessage, setErrorMessage] = useState(null)
+    const client = useApolloClient()
 
-  return (
-    <div>
-      <div>
-        <button onClick={() => setPage('authors')}>authors</button>
-        <button onClick={() => setPage('books')}>books</button>
-        <button onClick={() => setPage('add')}>add book</button>
-      </div>
+    useEffect(() => {
+        const userToken = localStorage.getItem('userToken')
+        if (userToken) {
+            setToken(userToken)
+        }
+    }, [])
 
-      <Authors
-        show={page === 'authors'}
-      />
+    const handleLogout = () => {
+        setToken(null)
+        localStorage.clear()
+        client.resetStore()
+    }
 
-      <Books
-        show={page === 'books'}
-      />
+    const LoginButton = () => {
+        return <button onClick={() => setPage('login')}>login</button>
+    }
 
-      <NewBook
-        show={page === 'add'}
-      />
+    const LogoutButton = () => {
+        return <button onClick={handleLogout}>logout</button>
+    }
 
-    </div>
-  )
+    return (
+        <div>
+            <div>
+                <button onClick={() => setPage('authors')}>authors</button>
+                <button onClick={() => setPage('books')}>books</button>
+                {token ? (
+                    <button onClick={() => setPage('add')}>add book</button>
+                ) : null}
+                {token ? <LogoutButton /> : <LoginButton />}
+            </div>
+            {errorMessage ? <div>{errorMessage}</div> : null}
+
+            <Authors show={page === 'authors'} />
+
+            <Books show={page === 'books'} />
+
+            {page === 'login' ? (
+                <LoginForm setError={setErrorMessage} setToken={setToken} />
+            ) : null}
+
+            <NewBook show={page === 'add'} />
+        </div>
+    )
 }
 
 export default App

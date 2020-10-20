@@ -4,10 +4,8 @@ import { ALL_BOOKS } from '../queries'
 
 const Books = (props) => {
     const result = useQuery(ALL_BOOKS)
-    if (!props.show) return null
     if (result.loading) return <div>...Loading</div>
-
-    if (!props.show) {
+    if (!props.show || !result.data) {
         return null
     }
 
@@ -26,7 +24,7 @@ const Books = (props) => {
                     {books.map((a) => (
                         <tr key={a.id}>
                             <td>{a.title}</td>
-                            <td>{a.author}</td>
+                            <td>{a.author.name}</td>
                             <td>{a.published}</td>
                         </tr>
                     ))}
