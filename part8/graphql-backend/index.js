@@ -1,5 +1,7 @@
 const { ApolloServer } = require('apollo-server')
 const mongoose = require('mongoose')
+const jwt = require('jsonwebtoken')
+const User = require('./models/user')
 const typeDefs = require('./graphql/typeDefs')
 const resolvers = require('./graphql/resolvers')
 const config = require('./utils/config')
@@ -21,6 +23,14 @@ mongoose
 const server = new ApolloServer({
     typeDefs,
     resolvers,
+    context: async ({ req }) => {
+        const auth = req ? req.headers.authorization : null
+        if (auth && auth.toLowerCase().startsWith('bearer ')) {
+            const decodedToken = jwt.verify(auth.substring(7), config.SECRET)
+            const currentUser = await User.findById(decodedToken.id)
+            return { currentUser }
+        }
+    },
 })
 
 server.listen().then(({ url }) => {

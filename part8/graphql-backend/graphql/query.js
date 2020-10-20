@@ -1,28 +1,56 @@
+const { UserInputError } = require('apollo-server')
 const Book = require('../models/book')
 const Author = require('../models/author')
-const testData = require('../tests/testData')
-const { authors, books: testBooks } = testData
 
 module.exports = {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
     allBooks: async (root, args) => {
-        const books = await Book.find({}).populate('author', {
-            name: 1,
-            born: 1,
-		})
-		return books
-        // const filteredBooks = books.filter((book) => {
-        //     const isAuthor = args.author ? args.author === book.author : true
-        //     const isGenre = args.genre ? book.genres.includes(args.genre) : true
-        //     return isAuthor && isGenre
-        // })
-        // return filteredBooks.map((book) => {
-        //     const author = authors.find((a) => book.author === a.name)
-        //     return { ...book, author }
-        // })
+        try {
+            if (args.author && args.genre) {
+                const author = await Author.findOne({ name: args.author })
+                if (!author)
+                    throw new UserInputError(
+                        `Author "${args.author}" not found`,
+                        { invalidArgs: args }
+                    )
+                return await Book.find({
+                    author: author,
+                    genres: { $in: args.genre },
+                }).populate('author', {
+                    name: 1,
+                    born: 1,
+                })
+            } else if (args.author) {
+                const author = await Author.findOne({ name: args.author })
+                if (!author) throw Error()
+                return await Book.find({
+                    author: author,
+                }).populate('author', {
+                    name: 1,
+                    born: 1,
+                })
+            } else if (args.genre) {
+                return await Book.find({
+                    genres: { $in: args.genre },
+                }).populate('author', {
+                    name: 1,
+                    born: 1,
+                })
+            } else {
+                return await Book.find({}).populate('author', {
+                    name: 1,
+                    born: 1,
+                })
+            }
+        } catch (error) {
+            throw new UserInputError(error.message, { invalidArgs: args })
+        }
     },
     allAuthors: async () => {
-		return await Author.find({})
-	},
+        return await Author.find({})
+    },
+    me: (root, args, context) => {
+        return context.currentUser
+    },
 }

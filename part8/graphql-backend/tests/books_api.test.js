@@ -50,20 +50,26 @@ beforeAll(async () => {
     // return await Promise.all(savePromises)
 })
 
-describe('retrieving books and authors', () => {
+describe('retrieving books', () => {
     test('allBooks query', async () => {
         const result = await client.query({ query: ALL_BOOKS })
         const books = result.data.allBooks
         expect(books).toBeDefined()
     })
+
+    test.only('allBooks by author', async () => {
+        const result = await client.query({
+            query: ALL_BOOKS,
+            variables: { author: 'Robert Martin' },
+        })
+        const books = result.data.allBooks
+        console.log(books)
+        expect(1).toBe(1)
+    })
+
     test('bookCount', async () => {
         const result = await client.query({ query: BOOK_COUNT })
         console.log(result.data.bookCount)
-        expect(1).toBe(1)
-    })
-    test('authorCount', async () => {
-        const result = await client.query({ query: AUTHOR_COUNT })
-        console.log(result.data.authorCount)
         expect(1).toBe(1)
     })
 })
@@ -81,10 +87,9 @@ describe('mutating books', () => {
             variables: newBook,
         })
         const book = result.data.addBook
-        console.log(book)
         expect(book).toBeDefined()
     })
-    test.only('editBirthYear mutation', async () => {
+    test('editBirthYear mutation', async () => {
         const result = await client.mutate({
             mutation: EDIT_BIRTH_YEAR,
             variables: { name: 'Robert Martin', born: 1990 },
@@ -100,6 +105,12 @@ describe('retrieving authors', () => {
         const result = await client.query({ query: ALL_AUTHORS })
         const authors = result.data.allAuthors
         expect(authors).toBeDefined()
+    })
+
+    test('authorCount', async () => {
+        const result = await client.query({ query: AUTHOR_COUNT })
+        console.log(result.data.authorCount)
+        expect(1).toBe(1)
     })
 })
 
