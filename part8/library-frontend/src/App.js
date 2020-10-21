@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useApolloClient } from '@apollo/client'
+import { useApolloClient, gql } from '@apollo/client'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
@@ -58,7 +58,7 @@ const App = () => {
                 <LoginForm setError={setErrorMessage} setToken={setToken} />
             ) : null}
 
-            <NewBook show={page === 'add'} />
+            <NewBook show={page === 'add'} setErrorMessage={setErrorMessage} />
 
             <Recommend show={page === 'recommend'} />
         </div>

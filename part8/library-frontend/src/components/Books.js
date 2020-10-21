@@ -4,20 +4,24 @@ import { ALL_BOOKS, BOOK_GENRES } from '../queries'
 
 const Books = (props) => {
     const [genre, setGenre] = useState('')
-    const [getBooks, { loading, data }] = useLazyQuery(ALL_BOOKS, {
-        variables: { genre },
-    })
-    const genreResult = useQuery(BOOK_GENRES)
-    const genres = genreResult.loading ? [] : genreResult.data.bookGenres
+    const [getBooks, { loading, data }] = useLazyQuery(ALL_BOOKS)
+    const genreQuery = useQuery(BOOK_GENRES)
+    const genres = genreQuery.loading ? [] : genreQuery.data.bookGenres
 
     useEffect(() => {
-        getBooks()
-    }, [genre])
+        if (genre) {
+            getBooks({
+                variables: { genre },
+            })
+        } else {
+            getBooks()
+        }
+    }, [getBooks])
 
-    if (loading) return <div>...Loading</div>
     if (!props.show || !data) {
         return null
     }
+    if (loading) return <div>...Loading</div>
 
     const books = data.allBooks
     const genreFilter = (book) => {
