@@ -50,6 +50,16 @@ module.exports = {
     allAuthors: async () => {
         return await Author.find({})
     },
+    bookGenres: async () => {
+        const books = await Book.find({})
+        if (!books) return []
+        const genres = books
+            .map((book) => {
+                return book.genres
+            })
+            .flat()
+        return [...new Set(genres)]
+    },
     me: (root, args, context) => {
         return context.currentUser
     },
