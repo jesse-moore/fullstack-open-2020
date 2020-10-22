@@ -1,13 +1,15 @@
+const Book = require('../models/book')
 const Query = require('./query')
 const Mutation = require('./mutation')
-const testData = require('../tests/testData')
-const { books } = testData
+const Subscription = require('./subsciption')
 
 module.exports = {
     Query,
     Author: {
-        bookCount: (root) =>
-            books.filter((book) => book.author === root.name).length,
+        bookCount: async (root) => {
+            return root.books.length
+        },
     },
     Mutation,
+    Subscription,
 }

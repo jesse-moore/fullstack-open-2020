@@ -2,8 +2,6 @@ const { ApolloClient, HttpLink, InMemoryCache } = require('@apollo/client')
 const mongoose = require('mongoose')
 const fetch = require('cross-fetch')
 const initDB = require('./initDB')
-const Author = require('../models/author')
-const Book = require('../models/book')
 const {
     ALL_BOOKS,
     ALL_AUTHORS,
@@ -12,9 +10,6 @@ const {
     AUTHOR_COUNT,
     EDIT_BIRTH_YEAR,
 } = require('./testQueries')
-
-const testData = require('../tests/testData')
-const { authors: testAuthors, books: testBooks } = testData
 
 const client = new ApolloClient({
     cache: new InMemoryCache(),
@@ -28,36 +23,17 @@ const client = new ApolloClient({
 })
 
 beforeAll(async () => {
-    // const newAuthor = new Author({
-    //     name: testAuthors[0].name,
-    //     born: testAuthors[0].born,
-    // })
-    // await newAuthor.save()
-    // await Author.deleteMany({})
-    // await initDB()
-    // const savePromises = testBooks.map(
-    //     async ({ title, published, author, genres }) => {
-    //         const newBookAuthor = await Author.findOne({ name: author })
-    //         const newBook = new Book({
-    //             genres,
-    //             published,
-    //             title,
-    //             author: newBookAuthor,
-    //         })
-    //         return newBook.save()
-    //     }
-    // )
-    // return await Promise.all(savePromises)
+    await initDB()
 })
 
 describe('retrieving books', () => {
-    test('allBooks query', async () => {
+    test.only('allBooks query', async () => {
         const result = await client.query({ query: ALL_BOOKS })
         const books = result.data.allBooks
         expect(books).toBeDefined()
     })
 
-    test.only('allBooks by author', async () => {
+    test('allBooks by author', async () => {
         const result = await client.query({
             query: ALL_BOOKS,
             variables: { author: 'Robert Martin' },
@@ -115,5 +91,5 @@ describe('retrieving authors', () => {
 })
 
 afterAll(() => {
-    // mongoose.connection.close()
+    mongoose.connection.close()
 })

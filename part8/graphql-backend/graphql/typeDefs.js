@@ -5,7 +5,8 @@ module.exports = gql`
         name: String!
         id: ID!
         born: Int
-        bookCount: Int
+		bookCount: Int
+		books: [Book!]
     }
 
     type Book {
@@ -41,9 +42,13 @@ module.exports = gql`
             published: Int!
             author: String!
             genres: [String!]!
-        ): Book
-        editAuthor(name: String!, setBornTo: Int!): Author
-        createUser(username: String!, favoriteGenre: String!): User
-        login(username: String!, password: String!): Token
-    }
+        ): Book!
+        editAuthor(name: String!, setBornTo: Int!): Author!
+        createUser(username: String!, favoriteGenre: String!): User!
+        login(username: String!, password: String!): Token!
+	}
+	
+	type Subscription {
+		bookAdded: Book!
+	}
 `

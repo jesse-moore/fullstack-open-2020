@@ -48,7 +48,7 @@ module.exports = {
         }
     },
     allAuthors: async () => {
-        return await Author.find({})
+        return await Author.find({}).populate('books')
     },
     bookGenres: async () => {
         const books = await Book.find({})

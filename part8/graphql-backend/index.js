@@ -8,6 +8,8 @@ const config = require('./utils/config')
 const logger = require('./utils/logger')
 
 logger.info('connecting to', config.MONGODB_URI)
+mongoose.set('useFindAndModify', false)
+mongoose.set('useCreateIndex', true)
 mongoose
     .connect(config.MONGODB_URI, {
         useNewUrlParser: true,
@@ -33,6 +35,7 @@ const server = new ApolloServer({
     },
 })
 
-server.listen().then(({ url }) => {
+server.listen().then(({ url, subscriptionsUrl }) => {
     logger.info(`Server ready at ${url}`)
+    logger.info(`Subscriptions ready at ${subscriptionsUrl}`)
 })

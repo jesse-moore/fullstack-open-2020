@@ -8,7 +8,7 @@ const Recommend = (props) => {
         ALL_BOOKS
     )
     useEffect(() => {
-        if (meQuery.loading) return
+        if (meQuery.loading || !meQuery.data.me) return
         const genre = meQuery.data.me.favoriteGenre
         getBooks({ variables: { genre } })
     }, [meQuery, getBooks])

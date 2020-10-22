@@ -1,5 +1,6 @@
 const { UserInputError } = require('apollo-server')
 const jwt = require('jsonwebtoken')
+const pubsub = require('./pubsub')
 const Book = require('../models/book')
 const Author = require('../models/author')
 const User = require('../models/user')
@@ -36,13 +37,13 @@ module.exports = {
             throw new UserInputError('Not Authorized')
         }
         try {
-            const author = await Author.findOne({ name: args.author })
-            if (!author) {
-                const newAuthor = await new Author({ name: args.author }).save()
-                return await new Book({ ...args, author: newAuthor }).save()
-            } else {
-                return await new Book({ ...args, author }).save()
-            }
+            const existingAuthor = await Author.findOne({ name: args.author })
+            const author = existingAuthor
+                ? existingAuthor
+                : await new Author({ name: args.author }).save()
+            const book = await new Book({ ...args, author }).save()
+            pubsub.publish('BOOK_ADDED', { bookAdded: book })
+            return book
         } catch (error) {
             throw new UserInputError(error.message, { invalidArgs: args })
         }
