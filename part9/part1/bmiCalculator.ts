@@ -3,16 +3,16 @@ interface inputValues {
     height: number;
 }
 
-// const validateInput = (args: Array<string>): inputValues => {
-//     if (args.length < 4) throw new Error('Not enough arguments');
-//     if (args.length > 4) throw new Error('Too many arguments');
+const validateInput = (args: Array<string>): inputValues => {
+    if (args.length < 4) throw new Error('Not enough arguments');
+    if (args.length > 4) throw new Error('Too many arguments');
 
-//     if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
-//         return { height: Number(args[2]), weight: Number(args[3]) };
-//     } else {
-//         throw new Error('malformatted parameters');
-//     }
-// };
+    if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
+        return { height: Number(args[2]), weight: Number(args[3]) };
+    } else {
+        throw new Error('malformatted parameters');
+    }
+};
 
 const validateQuery = (height: number, weight: number): inputValues => {
     if (!isNaN(height) && !isNaN(weight)) {
@@ -39,12 +39,14 @@ const calculateBmi = (height: number, weight: number): string => {
     return bmiCalculator(validatedInput.height, validatedInput.weight);
 };
 
-// try {
-//     const { height, weight } = validateInput(process.argv);
-//     const bmi = bmiCalculator(height, weight);
-//     console.log(bmi);
-// } catch ({ message }) {
-//     console.log('Error, something bad happened, message: ', message);
-// }
+if (require.main === module) {
+    try {
+        const { height, weight } = validateInput(process.argv);
+        const bmi = bmiCalculator(height, weight);
+        console.log(bmi);
+    } catch ({ message }) {
+        console.log('Error, something bad happened, message: ', message);
+    }
+}
 
 export default calculateBmi;

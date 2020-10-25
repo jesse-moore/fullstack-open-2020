@@ -1,6 +1,6 @@
 interface inputValues {
     target: number;
-    periods: Array<number>;
+    daily_exercises: Array<number>;
 }
 
 const validateInput = (args: Array<string>): inputValues => {
@@ -12,7 +12,7 @@ const validateInput = (args: Array<string>): inputValues => {
     });
 
     const [target, ...periods] = values;
-    return { target, periods };
+    return { target, daily_exercises: periods };
 };
 
 interface result {
@@ -25,6 +25,27 @@ interface result {
     average: number;
 }
 
+const validateQuery = (data: inputValues): inputValues => {
+    const { daily_exercises, target } = data;
+    if (!daily_exercises || !target) {
+        throw new Error('parameters missing');
+    }
+    if (!Array.isArray(daily_exercises) || isNaN(target)) {
+        throw new Error('malformatted parameters');
+    }
+    const isArrayWithNumbers =
+        daily_exercises.filter((value) => isNaN(value)).length === 0;
+    if (!isArrayWithNumbers) {
+        throw new Error('malformatted parameters');
+    }
+    return data;
+};
+
+const exerciseCalculator = (data: inputValues): result => {
+    const { daily_exercises, target } = validateQuery(data);
+    return calculateExercises(daily_exercises, target);
+};
+
 const calculateExercises = (
     hoursArray: Array<number>,
     targetHours: number
@@ -36,7 +57,10 @@ const calculateExercises = (
     };
     const periodLength = hoursArray.length;
     const trainingDays = hoursArray.filter((hours) => hours > 0).length;
-    const average = hoursArray.reduce((a, b) => a + b) / periodLength;
+    const average =
+        periodLength > 0
+            ? hoursArray.reduce((a, b) => a + b, 0) / periodLength
+            : 0;
     const success = average >= targetHours;
     const rating = average < targetHours ? 1 : average > targetHours ? 3 : 2;
     const ratingDescription = ratings[rating].description;
@@ -52,12 +76,14 @@ const calculateExercises = (
     };
 };
 
-try {
-    const { target, periods } = validateInput(process.argv);
-    const result = calculateExercises(periods, target);
-    console.log(result);
-} catch ({ message }) {
-    console.log('Error, something bad happened, message: ', message);
+if (require.main === module) {
+    try {
+        const { target, daily_exercises } = validateInput(process.argv);
+        const result = calculateExercises(daily_exercises, target);
+        console.log(result);
+    } catch ({ message }) {
+        console.log('Error, something bad happened, message: ', message);
+    }
 }
 
-export {};
+export { exerciseCalculator, inputValues };
