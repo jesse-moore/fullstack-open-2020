@@ -41,7 +41,9 @@ const parseSSN = (ssn: string) => {
 
 const parseOccupation = (occupation: string) => {
     if (!occupation || !isString(occupation)) {
-        throw new Error(`Incorrect or missing occupation: ${String(occupation)}`);
+        throw new Error(
+            `Incorrect or missing occupation: ${String(occupation)}`
+        );
     }
     return occupation;
 };
