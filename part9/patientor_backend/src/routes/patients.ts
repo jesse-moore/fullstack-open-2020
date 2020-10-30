@@ -10,7 +10,7 @@ router.get('/:id', (req, res) => {
 });
 
 router.get('/', (_req, res) => {
-    res.send(patientService.getNonSensitivePatientData());
+    res.json(patientService.getNonSensitivePatientData());
 });
 
 router.post('/', (req, res) => {

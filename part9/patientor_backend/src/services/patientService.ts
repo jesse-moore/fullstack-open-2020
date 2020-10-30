@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import patientsData from '../../data/patients.json';
+import patientsData from '../../data/patients';
 import toNewPatientEntry from '../utils/toNewPatientEntry';
 import {
     PatientEntryNonSensitive,
