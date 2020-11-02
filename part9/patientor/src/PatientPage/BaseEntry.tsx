@@ -1,7 +1,7 @@
 import React from 'react';
 import { useStateValue } from '../state';
 import { Entry } from '../types';
-import { Card, Header, Item, Grid, ListItem } from 'semantic-ui-react';
+import { Card, Item, Grid } from 'semantic-ui-react';
 
 const BaseEntry: React.FC<{ entry: Entry; type: string }> = ({
     entry,
@@ -24,33 +24,40 @@ const BaseEntry: React.FC<{ entry: Entry; type: string }> = ({
                     {description ? description : null}
                 </Item.Description>
             </Item>
-            <Item style={{ marginTop: '20px' }}>
-                <Item.Header as="h3" style={{ margin: '0px' }}>Diagnosis Codes</Item.Header>
-                <Grid padded='vertically'>
-                    <Grid.Row style={{ padding: '0px', marginTop: '5px' }}>
-                        <Grid.Column width={2}>
-                            <Item.Header as="h4" style={{ margin: '0px' }}>
-                                Code:
-                            </Item.Header>
-                        </Grid.Column>
-                        <Grid.Column width={14}>
-                            <Item.Header as="h4" style={{ margin: '0px' }}>
-                                Name:
-                            </Item.Header>
-                        </Grid.Column>
-                    </Grid.Row>
-                    {diagnosisCodes?.map((code) => {
-                        return (
-                            <Grid.Row key={code} style={{ padding: '0px', marginTop: '5px' }}>
-                                <Grid.Column width={2}>{code}</Grid.Column>
-                                <Grid.Column width={14}>
-                                    {diagnosis[code].name}
-                                </Grid.Column>
-                            </Grid.Row>
-                        );
-                    })}
-                </Grid>
-            </Item>
+            {diagnosisCodes ? (
+                <Item style={{ marginTop: '20px' }}>
+                    <Item.Header as="h3" style={{ margin: '0px' }}>
+                        Diagnosis Codes
+                    </Item.Header>
+                    <Grid padded="vertically">
+                        <Grid.Row style={{ padding: '0px', marginTop: '5px' }}>
+                            <Grid.Column width={2}>
+                                <Item.Header as="h4" style={{ margin: '0px' }}>
+                                    Code:
+                                </Item.Header>
+                            </Grid.Column>
+                            <Grid.Column width={14}>
+                                <Item.Header as="h4" style={{ margin: '0px' }}>
+                                    Name:
+                                </Item.Header>
+                            </Grid.Column>
+                        </Grid.Row>
+                        {diagnosisCodes?.map((code) => {
+                            return (
+                                <Grid.Row
+                                    key={code}
+                                    style={{ padding: '0px', marginTop: '5px' }}
+                                >
+                                    <Grid.Column width={2}>{code}</Grid.Column>
+                                    <Grid.Column width={14}>
+                                        {diagnosis[code].name}
+                                    </Grid.Column>
+                                </Grid.Row>
+                            );
+                        })}
+                    </Grid>
+                </Item>
+            ) : null}
         </>
     );
 };
