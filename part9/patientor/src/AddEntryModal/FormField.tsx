@@ -1,7 +1,9 @@
-import React from 'react';
-import { ErrorMessage, Field, FieldProps, FormikProps } from 'formik';
+import React, { useEffect } from 'react';
+import { ErrorMessage, Field, FieldProps, FormikProps, useField } from 'formik';
 import { Dropdown, DropdownProps, Form } from 'semantic-ui-react';
-import { Diagnosis, EntryType } from '../types';
+import { EntryType, Entry, HealthCheckRating } from '../types';
+
+export type EntryFormValues = Omit<Entry, 'id'>;
 
 // structure of a single option
 export type EntryOption = {
@@ -10,28 +12,39 @@ export type EntryOption = {
 };
 
 // props for select field component
-type SelectFieldProps = {
+interface EntryTypeSelectFieldProps {
     name: string;
     label: string;
     options: EntryOption[];
-};
+    setValues: FormikProps<EntryFormValues>;
+    values: EntryFormValues;
+}
 
-export const SelectField: React.FC<SelectFieldProps> = ({
+export const SelectField: React.FC<EntryTypeSelectFieldProps> = ({
     name,
     label,
     options,
-}: SelectFieldProps) => (
-    <Form.Field>
-        <label>{label}</label>
-        <Field as="select" name={name} className="ui dropdown">
-            {options.map((option) => (
-                <option key={option.value} value={option.value}>
-                    {option.label || option.value}
-                </option>
-            ))}
-        </Field>
-    </Form.Field>
-);
+    setValues,
+    values,
+}: EntryTypeSelectFieldProps) => {
+    useEffect(() => {
+        const { description, date, specialist, type } = values;
+        setValues({ description, date, specialist, type });
+    }, [values.type]);
+
+    return (
+        <Form.Field>
+            <label>{label}</label>
+            <Field as="select" name={name} className="ui dropdown">
+                {options.map((option) => (
+                    <option key={option.value} value={option.value}>
+                        {option.label || option.value}
+                    </option>
+                ))}
+            </Field>
+        </Form.Field>
+    );
+};
 
 interface TextProps extends FieldProps {
     label: string;
@@ -78,18 +91,32 @@ export const NumberField: React.FC<NumberProps> = ({
     </Form.Field>
 );
 
-export const DiagnosisSelection = ({
-    diagnoses,
+interface HealthRatingOption {
+    value: HealthCheckRating;
+    text: string;
+}
+
+const options: HealthRatingOption[] = [
+    { value: HealthCheckRating.CriticalRisk, text: 'Critical Risk' },
+    { value: HealthCheckRating.HighRisk, text: 'High Risk' },
+    { value: HealthCheckRating.LowRisk, text: 'Low Risk' },
+    { value: HealthCheckRating.Healthy, text: 'Healthy' },
+];
+
+export interface HealthCheckFormProps {
+    setFieldValue: FormikProps<{
+        healthCheckRating: HealthCheckRating;
+    }>['setFieldValue'];
+    setFieldTouched: FormikProps<{
+        healthCheckRating: HealthCheckRating;
+    }>['setFieldTouched'];
+}
+
+export const HealthRatingSelection = ({
     setFieldValue,
     setFieldTouched,
-}: {
-    diagnoses: Diagnosis[];
-    setFieldValue: FormikProps<{ diagnosisCodes: string[] }>['setFieldValue'];
-    setFieldTouched: FormikProps<{
-        diagnosisCodes: string[];
-    }>['setFieldTouched'];
-}) => {
-    const field = 'diagnosisCodes';
+}: HealthCheckFormProps) => {
+    const field = 'healthCheckRating';
     const onChange = (
         _event: React.SyntheticEvent<HTMLElement, Event>,
         data: DropdownProps
@@ -97,12 +124,6 @@ export const DiagnosisSelection = ({
         setFieldTouched(field, true);
         setFieldValue(field, data.value);
     };
-
-    const stateOptions = diagnoses.map((diagnosis) => ({
-        key: diagnosis.code,
-        text: `${diagnosis.name} (${diagnosis.code})`,
-        value: diagnosis.code,
-    }));
 
     return (
         <Form.Field>
@@ -112,7 +133,7 @@ export const DiagnosisSelection = ({
                 multiple
                 search
                 selection
-                options={stateOptions}
+                options={options}
                 onChange={onChange}
             />
             <ErrorMessage name={field} />

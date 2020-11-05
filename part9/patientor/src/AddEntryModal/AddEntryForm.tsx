@@ -2,8 +2,10 @@ import React from 'react';
 import { Grid, Button } from 'semantic-ui-react';
 import { Field, Formik, Form } from 'formik';
 
-import { TextField, SelectField, EntryOption } from './FormField';
-import { EntryType, BaseEntry, Entry } from '../types';
+import { TextField } from './FormField';
+import BaseForm from './BaseForm';
+import HealthCheckForm from './HealthCheckForm';
+import { EntryType, Entry } from '../types';
 
 /*
  * use type Entry, but omit id,
@@ -15,15 +17,6 @@ interface Props {
     onSubmit: (values: EntryFormValues) => void;
     onCancel: () => void;
 }
-
-const entryTypes: EntryOption[] = [
-    { value: EntryType.HealthCheck, label: 'Health Check' },
-    { value: EntryType.Hospital, label: 'Hospital' },
-    {
-        value: EntryType.OccupationalHealthcare,
-        label: 'Occupational Healthcare',
-    },
-];
 
 export const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
     return (
@@ -53,33 +46,24 @@ export const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
                 return errors;
             }}
         >
-            {({ values, isValid, dirty }) => {
-                console.log(values);
+            {({
+                values,
+                isValid,
+                dirty,
+                setValues,
+                setFieldTouched,
+                setFieldValue,
+            }) => {
+                const type = values.type;
                 return (
                     <Form className="form ui">
-                        <SelectField
-                            label="Entry Type"
-                            name="type"
-                            options={entryTypes}
-                        />
-                        <Field
-                            label="Description"
-                            placeholder="Description"
-                            name="description"
-                            component={TextField}
-                        />
-                        <Field
-                            label="Date"
-                            placeholder="Date"
-                            name="date"
-                            component={TextField}
-                        />
-                        <Field
-                            label="Specialist"
-                            placeholder="Specialist"
-                            name="specialist"
-                            component={TextField}
-                        />
+                        <BaseForm setValues={setValues} values={values} />
+                        {type === EntryType.HealthCheck && (
+                            <HealthCheckForm
+                                setFieldValue={setFieldValue}
+                                setFieldTouched={setFieldTouched}
+                            />
+                        )}
                         {values.type === EntryType.OccupationalHealthcare && (
                             <Field
                                 label="Employer Name"
