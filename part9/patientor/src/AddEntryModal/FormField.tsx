@@ -1,5 +1,11 @@
 import React, { useEffect } from 'react';
-import { ErrorMessage, Field, FieldProps, FormikProps, useField } from 'formik';
+import {
+    ErrorMessage,
+    Field,
+    FieldProps,
+    FormikProps,
+    useFormikContext,
+} from 'formik';
 import { Dropdown, DropdownProps, Form } from 'semantic-ui-react';
 import { EntryType, Entry, HealthCheckRating } from '../types';
 
@@ -16,17 +22,17 @@ interface EntryTypeSelectFieldProps {
     name: string;
     label: string;
     options: EntryOption[];
-    setValues: FormikProps<EntryFormValues>;
-    values: EntryFormValues;
 }
 
 export const SelectField: React.FC<EntryTypeSelectFieldProps> = ({
     name,
     label,
     options,
-    setValues,
-    values,
 }: EntryTypeSelectFieldProps) => {
+    const {
+        values,
+        setValues,
+    }: FormikProps<EntryFormValues> = useFormikContext();
     useEffect(() => {
         const { description, date, specialist, type } = values;
         setValues({ description, date, specialist, type });

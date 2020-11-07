@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Grid, Button } from 'semantic-ui-react';
 import { Field, Formik, Form } from 'formik';
 
@@ -19,13 +19,14 @@ interface Props {
 }
 
 export const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
+    const [type, setType] = useState<EntryType>(EntryType.HealthCheck);
     return (
         <Formik
             initialValues={{
                 description: '',
                 date: '',
                 specialist: '',
-                type: EntryType.HealthCheck,
+                type,
             }}
             onSubmit={onSubmit}
             validate={(values) => {
@@ -46,24 +47,13 @@ export const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
                 return errors;
             }}
         >
-            {({
-                values,
-                isValid,
-                dirty,
-                setValues,
-                setFieldTouched,
-                setFieldValue,
-            }) => {
-                const type = values.type;
+            {({ values, isValid, dirty }) => {
                 return (
                     <Form className="form ui">
-                        <BaseForm setValues={setValues} values={values} />
-                        {type === EntryType.HealthCheck && (
-                            <HealthCheckForm
-                                setFieldValue={setFieldValue}
-                                setFieldTouched={setFieldTouched}
-                            />
-                        )}
+                        <BaseForm setType={setType} />
+                        {/* {type === EntryType.HealthCheck && (
+                            <HealthCheckForm/>
+                        )} */}
                         {values.type === EntryType.OccupationalHealthcare && (
                             <Field
                                 label="Employer Name"
