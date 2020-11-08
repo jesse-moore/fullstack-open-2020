@@ -1,56 +1,7 @@
-import React, { useEffect } from 'react';
-import {
-    ErrorMessage,
-    Field,
-    FieldProps,
-    FormikProps,
-    useFormikContext,
-} from 'formik';
+import React from 'react';
+import { ErrorMessage, Field, FieldProps, FormikProps } from 'formik';
 import { Dropdown, DropdownProps, Form } from 'semantic-ui-react';
-import { EntryType, Entry, HealthCheckRating } from '../types';
-
-export type EntryFormValues = Omit<Entry, 'id'>;
-
-// structure of a single option
-export type EntryOption = {
-    value: EntryType;
-    label: string;
-};
-
-// props for select field component
-interface EntryTypeSelectFieldProps {
-    name: string;
-    label: string;
-    options: EntryOption[];
-}
-
-export const SelectField: React.FC<EntryTypeSelectFieldProps> = ({
-    name,
-    label,
-    options,
-}: EntryTypeSelectFieldProps) => {
-    const {
-        values,
-        setValues,
-    }: FormikProps<EntryFormValues> = useFormikContext();
-    useEffect(() => {
-        const { description, date, specialist, type } = values;
-        setValues({ description, date, specialist, type });
-    }, [values.type]);
-
-    return (
-        <Form.Field>
-            <label>{label}</label>
-            <Field as="select" name={name} className="ui dropdown">
-                {options.map((option) => (
-                    <option key={option.value} value={option.value}>
-                        {option.label || option.value}
-                    </option>
-                ))}
-            </Field>
-        </Form.Field>
-    );
-};
+import { HealthCheckRating } from '../types';
 
 interface TextProps extends FieldProps {
     label: string;

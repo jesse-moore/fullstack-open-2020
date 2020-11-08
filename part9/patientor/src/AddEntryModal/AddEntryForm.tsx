@@ -3,6 +3,7 @@ import { Grid, Button } from 'semantic-ui-react';
 import { Field, Formik, Form } from 'formik';
 
 import { TextField } from './FormField';
+import TypeSelect from './TypeSelect';
 import BaseForm from './BaseForm';
 import HealthCheckForm from './HealthCheckForm';
 import { EntryType, Entry } from '../types';
@@ -50,10 +51,9 @@ export const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
             {({ values, isValid, dirty }) => {
                 return (
                     <Form className="form ui">
-                        <BaseForm setType={setType} />
-                        {/* {type === EntryType.HealthCheck && (
-                            <HealthCheckForm/>
-                        )} */}
+                        <TypeSelect setType={setType} />
+                        <BaseForm />
+                        {type === EntryType.HealthCheck && <HealthCheckForm />}
                         {values.type === EntryType.OccupationalHealthcare && (
                             <Field
                                 label="Employer Name"
