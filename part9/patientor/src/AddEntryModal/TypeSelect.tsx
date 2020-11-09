@@ -49,17 +49,28 @@ const TypeSelect: React.FC<Props> = ({ setType }) => {
         _event: React.SyntheticEvent<HTMLElement, Event>,
         data: DropdownProps
     ) => {
-        const { description, date, specialist, type } = values;
+        const { description, date, specialist } = values;
+        const validOption = options.find(
+            (option) => option.value === data.value
+        );
+        if (validOption === undefined) return;
+        const type = validOption.value;
         setValues({ description, date, specialist, type });
         setType(type);
         setFieldTouched(field, true);
-        setFieldValue(field, data.value);
+        setFieldValue(field, type);
     };
 
     return (
         <Form.Field>
             <label>Entry Type</label>
-            <Dropdown fluid selection options={options} onChange={onChange} />
+            <Dropdown
+                fluid
+                placeholder="Select Entry Type"
+                selection
+                options={options}
+                onChange={onChange}
+            />
         </Form.Field>
     );
 };

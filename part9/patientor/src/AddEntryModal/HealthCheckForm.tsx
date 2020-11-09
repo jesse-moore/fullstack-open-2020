@@ -24,11 +24,15 @@ interface HealthCheckFormType {
     }>['setFieldTouched'];
 }
 
-const HealthCheckForm: React.FC = () => {
+const HealthCheckForm: React.FC<{ show: boolean }> = ({ show }) => {
     const {
         setFieldTouched,
         setFieldValue,
     }: HealthCheckFormType = useFormikContext();
+
+	if (!show) return null;
+	
+
     const field = 'healthCheckRating';
     const onChange = (
         _event: React.SyntheticEvent<HTMLElement, Event>,
@@ -41,6 +45,7 @@ const HealthCheckForm: React.FC = () => {
         <Form.Field>
             <label>Health Check Rating</label>
             <Dropdown
+                placeholder="Select Health Check Rating"
                 fluid
                 search
                 selection
