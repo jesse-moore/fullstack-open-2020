@@ -55,7 +55,14 @@ export interface HospitalEntry extends BaseEntry {
     discharge: { date: string; criteria: string };
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type DistributiveOmit<T, K extends keyof any> = T extends any
+    ? Omit<T, K>
+    : never;
+
 export type Entry =
     | HealthCheckEntry
     | HospitalEntry
     | OccupationalHealthcareEntry;
+
+export type NewEntry = DistributiveOmit<Entry, 'id'>;

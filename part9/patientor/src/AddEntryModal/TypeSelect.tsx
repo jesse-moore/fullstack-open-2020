@@ -1,8 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { FormikProps, useFormikContext, FormikContextType } from 'formik';
 import { Dropdown, DropdownProps, Form } from 'semantic-ui-react';
 import { EntryType } from '../types';
-import { EntryFormValues } from './AddEntryForm';
 
 // structure of a single option
 type EntryOption = {
@@ -21,44 +19,21 @@ const options: EntryOption[] = [
 
 interface Props {
     setType: Dispatch<SetStateAction<EntryType>>;
+    type: EntryType;
 }
 
-type ValuesType = FormikContextType<EntryFormValues>;
-
-interface SelectFormType {
-    setValues: FormikProps<EntryFormValues>['setValues'];
-    setFieldValue: FormikProps<{
-        type: EntryType;
-    }>['setFieldValue'];
-    setFieldTouched: FormikProps<{
-        type: EntryType;
-    }>['setFieldTouched'];
-}
-
-const TypeSelect: React.FC<Props> = ({ setType }) => {
-    const {
-        values,
-        setFieldTouched,
-        setFieldValue,
-        setValues,
-    }: ValuesType & SelectFormType = useFormikContext();
-
-    const field = 'type';
-
+const TypeSelect: React.FC<Props> = ({ setType, type }) => {
     const onChange = (
         _event: React.SyntheticEvent<HTMLElement, Event>,
         data: DropdownProps
     ) => {
-        const { description, date, specialist } = values;
         const validOption = options.find(
             (option) => option.value === data.value
         );
         if (validOption === undefined) return;
+ 
         const type = validOption.value;
-        setValues({ description, date, specialist, type });
         setType(type);
-        setFieldTouched(field, true);
-        setFieldValue(field, type);
     };
 
     return (
@@ -68,6 +43,7 @@ const TypeSelect: React.FC<Props> = ({ setType }) => {
                 fluid
                 placeholder="Select Entry Type"
                 selection
+                value={type}
                 options={options}
                 onChange={onChange}
             />

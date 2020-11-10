@@ -10,7 +10,7 @@ const OccupationalHealthcareForm: React.FC<{ show: boolean }> = ({ show }) => {
             <Field
                 label="Employer"
                 placeholder="Employer"
-                name="employer"
+                name="employerName"
                 component={TextField}
             />
             <Header size="small">Sick Leave</Header>
