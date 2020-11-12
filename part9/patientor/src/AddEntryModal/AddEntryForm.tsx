@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Grid, Button } from 'semantic-ui-react';
-import { Formik, Form } from 'formik';
+import { Formik, Form, FormikErrors } from 'formik';
 import TypeSelect from './TypeSelect';
 import BaseForm from './BaseForm';
 import HealthCheckForm from './HealthCheckForm';
@@ -54,9 +54,9 @@ const hospitalInitialValues: Omit<HospitalEntry, 'id'> = {
     discharge: { date: '', criteria: '' },
 };
 
-const validateBase = (values: NewEntry) => {
+const validateBase = (values: NewEntry): FormikErrors<NewEntry> => {
     const requiredError = 'Field is required';
-    const errors: { [field: string]: string } = {};
+    const errors: FormikErrors<NewEntry> = {};
     if (!values.description) {
         errors.description = requiredError;
     }
@@ -72,9 +72,14 @@ const validateBase = (values: NewEntry) => {
     return errors;
 };
 
-const validateHealthCheck = (values: Omit<HealthCheckEntry, 'id'>) => {
+const validateHealthCheck = (
+    values: NewEntry
+): FormikErrors<Omit<HealthCheckEntry, 'id'>> => {
+    if (values.type !== EntryType.HealthCheck) {
+        throw Error();
+    }
     const requiredError = 'Field is required';
-    const errors: { [field: string]: string } = {};
+    const errors: FormikErrors<Omit<HealthCheckEntry, 'id'>> = {};
     const baseErrors = validateBase(values);
     if (!values.healthCheckRating) {
         errors.healthCheckRating = requiredError;
@@ -82,24 +87,34 @@ const validateHealthCheck = (values: Omit<HealthCheckEntry, 'id'>) => {
     return { ...baseErrors, ...errors };
 };
 
-const validateHospital = (values: Omit<HospitalEntry, 'id'>) => {
+const validateHospital = (
+    values: NewEntry
+):
+    | { discharge: FormikErrors<Omit<HospitalEntry, 'id'>> }
+    | FormikErrors<Omit<HospitalEntry, 'id'>> => {
+    if (values.type !== EntryType.Hospital) {
+        throw Error();
+    }
     const requiredError = 'Field is required';
-    const errors: { [field: string]: string } = {};
+    const errors: FormikErrors<Omit<HospitalEntry, 'id'>> = {};
     const baseErrors = validateBase(values);
     if (!values.discharge.date) {
-        errors.date = requiredError;
+        errors.discharge = { ...errors.discharge, date: requiredError };
     }
     if (!values.discharge.criteria) {
-        errors.criteria = requiredError;
+        errors.discharge = { ...errors.discharge, criteria: requiredError };
     }
-    return { ...baseErrors, discharge: errors };
+    return { ...baseErrors, ...errors };
 };
 
 const validateOccupationalHealth = (
-    values: Omit<OccupationalHealthcareEntry, 'id'>
-) => {
+    values: NewEntry
+): FormikErrors<Omit<OccupationalHealthcareEntry, 'id'>> => {
+    if (values.type !== EntryType.OccupationalHealthcare) {
+        throw Error();
+    }
     const requiredError = 'Field is required';
-    const errors: { [field: string]: string } = {};
+    const errors: FormikErrors<Omit<OccupationalHealthcareEntry, 'id'>> = {};
     const baseErrors = validateBase(values);
     if (!values.employerName) {
         errors.employerName = requiredError;
@@ -115,14 +130,14 @@ export const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
         validation,
     }: {
         initialValues: NewEntry;
-        validation: any;
+        // validation: any;
+        validation: (values: NewEntry) => FormikErrors<NewEntry>;
     }) => {
         return (
             <Formik
                 initialValues={initialValues}
                 onSubmit={onSubmit}
                 validate={validation}
-                // enableReinitialize={true}
             >
                 {({ isValid, dirty }) => {
                     const showForm = {

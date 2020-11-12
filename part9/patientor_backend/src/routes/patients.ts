@@ -26,7 +26,12 @@ router.post('/', (req, res) => {
 
 router.post('/:id/entries', (req, res) => {
     try {
-        const newEntry: Entry = patientService.addEntry(req.body);
+        const { id } = req.params;
+        const newEntry: Entry = patientService.addEntry({
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            entry: req.body,
+            patientID: id,
+        });
         res.json(newEntry);
     } catch ({ message }) {
         const error = message ? String(message) : 'malformatted parameters';

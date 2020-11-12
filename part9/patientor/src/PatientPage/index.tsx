@@ -3,10 +3,10 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { Icon, Header, List, Button } from 'semantic-ui-react';
 import { apiBaseUrl } from '../constants';
-import { useStateValue, updatePatient } from '../state';
+import { useStateValue, addEntry } from '../state';
 import EntryDetails from './Entries';
 import AddEntryModal from '../AddEntryModal';
-import { NewEntry } from '../types';
+import { NewEntry, Entry } from '../types';
 
 const PatientPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -24,12 +24,11 @@ const PatientPage: React.FC = () => {
 
     const submitNewEntry = async (values: NewEntry) => {
         try {
-            console.log(values);
-            // const { data: newEntry } = await axios.post<NewEntry>(
-            //     `${apiBaseUrl}/patients`,
-            //     values
-            // );
-            // dispatch(updatePatient(newEntry));
+            const { data: entry } = await axios.post<Entry>(
+                `${apiBaseUrl}/patients/${id}/entries`,
+                values
+            );
+            dispatch(addEntry({ entry, id }));
             closeModal();
         } catch (e) {
             console.error(e.response.data);
