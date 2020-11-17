@@ -28,4 +28,4 @@ Exercise solutions to the Full Stack Open 2020 course from the University of Hel
 
 <br/>
 
-### Certificate of Completion: [Certificate]("https://raw.githubusercontent.com/jesse-moore/fullstack-open-2020/master/certificate-fullstack.png")
+### Certificate of Completion: [Certificate](https://raw.githubusercontent.com/jesse-moore/fullstack-open-2020/master/certificate-fullstack.png)
