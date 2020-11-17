@@ -26,4 +26,6 @@ Exercise solutions to the Full Stack Open 2020 course from the University of Hel
 
 ### Part 9 - [Typescript](https://fullstackopen.com/en/part9)
 
-### Certificate of Completion - [Certificate](./certificate-fullstack.png)
+<br/>
+
+### Certificate of Completion: [Certificate]("https://raw.githubusercontent.com/jesse-moore/fullstack-open-2020/master/certificate-fullstack.png")
